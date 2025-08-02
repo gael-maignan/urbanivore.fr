@@ -290,9 +290,9 @@ document.getElementById("scrollButton").addEventListener("click", () => {
 
 
       <!--
-      <a href="map.html?toulouse" class="btn" target="_blank">Toulouse</a>
-      <a href="map.html?paris" class="btn" target="_blank">Paris</a>
-      <a href="map.html?bordeaux" class="btn" target="_blank">Bordeaux</a>-->
+      <a href="map?toulouse" class="btn" target="_blank">Toulouse</a>
+      <a href="map?paris" class="btn" target="_blank">Paris</a>
+      <a href="map?bordeaux" class="btn" target="_blank">Bordeaux</a>-->
     </div>
   </header>
 
@@ -323,7 +323,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
         <div class="overlay-filter"></div>
         <button class="btn" onclick="loadMap()">Afficher la carte</button>
       </div>
-      <iframe id="cityMap" data-src="map.html?ville=paris" loading="lazy"></iframe>
+      <iframe id="cityMap" data-src="map?ville=paris" loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -435,7 +435,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     const iframe = document.getElementById('cityMap');
     const overlay = document.getElementById('mapOverlay');
 
-    iframe.src = `map.html?ville=${city}`;
+    iframe.src = `map?ville=${city}`;
     iframe.classList.add('loaded');
 
     if (window.innerWidth <= 600 && overlay && overlay.style.display !== 'none') {
@@ -518,10 +518,10 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     <div class="container">
       <h2>Cartes interactives</h2>
       <div class="grid">
-        <div class="card">Paris – <a href="map.html?paris" target="_blank">Voir la carte</a></div>
-        <div class="card">Lyon – <a href="map.html?lyon" target="_blank">Voir la carte</a></div>
-        <div class="card">Bordeaux – <a href="map.html?bordeaux" target="_blank">Voir la carte</a></div>
-        <div class="card">Grenoble – <a href="map.html?grenoble" target="_blank">Voir la carte</a></div>
+        <div class="card">Paris – <a href="map?paris" target="_blank">Voir la carte</a></div>
+        <div class="card">Lyon – <a href="map?lyon" target="_blank">Voir la carte</a></div>
+        <div class="card">Bordeaux – <a href="map?bordeaux" target="_blank">Voir la carte</a></div>
+        <div class="card">Grenoble – <a href="map?grenoble" target="_blank">Voir la carte</a></div>
       </div>
     </div>
   </section>-->
@@ -530,7 +530,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     <div class="container">
       <h2>Des recettes et des usages</h2>
       <p>De la confiture de sureau à l’infusion de tilleul, plus de 100 recettes ont été recensées pour valoriser les ressources végétales urbaines.</p>
-      <div class="card">Recettes – <a href="recettes.html" target="_blank">Voir toutes les recettes</a></div>
+      <div class="card">Recettes – <a href="recettes" target="_blank">Voir toutes les recettes</a></div>
     </div>
   </section>
 
@@ -594,7 +594,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     <div class="container">
       <nav>
         <a href="#cartes">Cartes</a>
-        <a href="recettes.html" target="_blank">Recettes</a>
+        <a href="recettes" target="_blank">Recettes</a>
         <a href="#">Mentions légales</a>
         <a href="https://www.openstreetmap.org/">OpenStreetMap</a>
       </nav>
@@ -623,9 +623,9 @@ document.getElementById("scrollButton").addEventListener("click", () => {
       // Définir la ville par défaut dans l'iframe
       const iframe = document.getElementById("cityMap");
       if (iframe) {
-        //iframe.src = `map.html?${ville}`;
+        //iframe.src = `map?${ville}`;
         //iframe.classList.add("loaded");
-        iframe.setAttribute("data-src", `map.html?ville=${ville}`);
+        iframe.setAttribute("data-src", `map?ville=${ville}`);
       }
 
       // Affiche uniquement la source de la ville sélectionnée

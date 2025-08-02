@@ -12,3 +12,5 @@
 /map?strasbourg        /map.html?ville=strasbourg         301
 /map.html?lyon        /map.html?ville=lyon         301
 /map?lyon        /map.html?ville=lyon         301
+/map.html?grenoble        /map.html?ville=grenoble         301
+/map?grenoble        /map.html?ville=grenoble         301
