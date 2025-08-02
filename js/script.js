@@ -45,9 +45,12 @@ const villes = {
   }
 };
 
-const queryString = window.location.search; // Ex: "?lyon"
-let ville = queryString && queryString !== "?" ? queryString.substring(1) : "";
+
+
+const params = new URLSearchParams(window.location.search);
+let ville = params.get("ville");
 ville = ville.toLowerCase();
+
 // Vérifie si la ville est connue, sinon remplace par "paris"
 if (!villes.hasOwnProperty(ville)) {
   ville = "paris";
