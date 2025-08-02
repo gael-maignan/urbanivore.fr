@@ -323,7 +323,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
         <div class="overlay-filter"></div>
         <button class="btn" onclick="loadMap()">Afficher la carte</button>
       </div>
-      <iframe id="cityMap" data-src="map.html?paris" loading="lazy"></iframe>
+      <iframe id="cityMap" data-src="map.html?ville=paris" loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -435,7 +435,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     const iframe = document.getElementById('cityMap');
     const overlay = document.getElementById('mapOverlay');
 
-    iframe.src = `map.html?${city}`;
+    iframe.src = `map.html?ville=${city}`;
     iframe.classList.add('loaded');
 
     if (window.innerWidth <= 600 && overlay && overlay.style.display !== 'none') {
@@ -625,7 +625,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
       if (iframe) {
         //iframe.src = `map.html?${ville}`;
         //iframe.classList.add("loaded");
-        iframe.setAttribute("data-src", `map.html?${ville}`);
+        iframe.setAttribute("data-src", `map.html?ville=${ville}`);
       }
 
       // Affiche uniquement la source de la ville sélectionnée

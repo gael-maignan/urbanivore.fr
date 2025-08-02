@@ -49,12 +49,13 @@ const villes = {
 
 const params = new URLSearchParams(window.location.search);
 let ville = params.get("ville");
-ville = ville.toLowerCase();
 
 // Vérifie si la ville est connue, sinon remplace par "paris"
 if (!villes.hasOwnProperty(ville)) {
   ville = "paris";
 }
+ville = ville.toLowerCase();
+
 const root = "https://urbanivore.fr/data/" + ville + ".geojson";
 document.getElementById('ville_src').textContent = villes[ville].nom;
 document.getElementById('data_src').innerText = villes[ville].src[0];
