@@ -1,16 +1,2 @@
 /urbanivore.png        /img/urbanivore.webp         301
 /image.png        /img/map.png         301
-/map.html?bordeaux        /map.html?ville=bordeaux         301
-/map?bordeaux        /map.html?ville=bordeaux         301
-/map.html?paris        /map.html?ville=paris         301
-/map?paris        /map.html?ville=paris         301
-/map.html?toulouse        /map.html?ville=toulouse         301
-/map?toulouse        /map.html?ville=toulouse         301
-/map.html?rennes        /map.html?ville=rennes         301
-/map?rennes        /map.html?ville=rennes         301
-/map.html?strasbourg        /map.html?ville=strasbourg         301
-/map?strasbourg        /map.html?ville=strasbourg         301
-/map.html?lyon        /map.html?ville=lyon         301
-/map?lyon        /map.html?ville=lyon         301
-/map.html?grenoble        /map.html?ville=grenoble         301
-/map?grenoble        /map.html?ville=grenoble         301
