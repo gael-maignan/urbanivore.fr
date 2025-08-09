@@ -16,6 +16,8 @@
   <link rel="icon" href="img/logo.png" type="image/png">
 
   <script type="module" src="https://gael-mgn.github.io/js/log.js"></script>
+  <script src="js/ipfs-optimizer.js"></script>
+  <script src="js/test-uspot.js"></script>
 
   <style>
     :root {
@@ -300,6 +302,12 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     <div class="container">
       <h2>La ville au bord des lèvres</h2>
       <p><strong>Urbanivore</strong> est un projet visant à révéler le potentiel nourricier de nos métropoles en cartographiant les arbres comestibles accessibles dans l'espace public. Grâce aux données en Open Data et à une base de plus de 100 recettes associées à chaque essence, chacun peut réapprendre à cueillir, transformer, goûter… et mieux habiter sa ville.</p>
+      
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="nostr.html" class="btn" style="background: var(--accent-color); color: white; text-decoration: none;">
+          🌳 Partager vos découvertes via NOSTR
+        </a>
+      </div>
     </div>
   </section>
 <section id="map">
@@ -323,7 +331,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
         <div class="overlay-filter"></div>
         <button class="btn" onclick="loadMap()">Afficher la carte</button>
       </div>
-      <iframe id="cityMap" data-src="map?ville=paris" loading="lazy"></iframe>
+      <iframe id="cityMap" data-src="map.html?ville=paris" loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -435,7 +443,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     const iframe = document.getElementById('cityMap');
     const overlay = document.getElementById('mapOverlay');
 
-    iframe.src = `map?ville=${city}`;
+    iframe.src = `map.html?ville=${city}`;
     iframe.classList.add('loaded');
 
     if (window.innerWidth <= 600 && overlay && overlay.style.display !== 'none') {
@@ -518,10 +526,10 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     <div class="container">
       <h2>Cartes interactives</h2>
       <div class="grid">
-        <div class="card">Paris – <a href="map?paris" target="_blank">Voir la carte</a></div>
-        <div class="card">Lyon – <a href="map?lyon" target="_blank">Voir la carte</a></div>
-        <div class="card">Bordeaux – <a href="map?bordeaux" target="_blank">Voir la carte</a></div>
-        <div class="card">Grenoble – <a href="map?grenoble" target="_blank">Voir la carte</a></div>
+        <div class="card">Paris – <a href="map.html?ville=paris" target="_blank">Voir la carte</a></div>
+        <div class="card">Lyon – <a href="map.html?ville=lyon" target="_blank">Voir la carte</a></div>
+        <div class="card">Bordeaux – <a href="map.html?ville=bordeaux" target="_blank">Voir la carte</a></div>
+        <div class="card">Grenoble – <a href="map.html?ville=grenoble" target="_blank">Voir la carte</a></div>
       </div>
     </div>
   </section>-->

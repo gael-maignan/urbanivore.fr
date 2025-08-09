@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="img/logo.png">
+    <title>Urbanivore - NOSTR Navigation</title>
+    <style>
+        :root {
+            --bg-color: #fdfaf3;
+            --accent-color: #6b8e23;
+            --accent-dark: #4e6c13;
+            --text-color: #3e3e3e;
+            --font-main: 'Inter', sans-serif;
+            --font-alt: 'Lora', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-main);
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            background: linear-gradient(to right, #6b8e23, #4e6c13);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-style: italic;
+            font-size: 1.1em;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .nav-card h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .nav-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .nav-card .features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-card .features li {
+            padding: 5px 0;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .nav-card .features li:before {
+            content: "✓ ";
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent-dark);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .info-section h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .info-item h4 {
+            margin: 0 0 10px 0;
+            color: var(--accent-color);
+            font-size: 1.1em;
+        }
+
+        .info-item p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌳 Urbanivore NOSTR</h1>
+            <p>Navigation vers les interfaces de partage décentralisé</p>
+        </div>
+
+        <div class="nav-grid">
+            <!-- Interface de partage -->
+            <a href="nostr-interface.html" class="nav-card">
+                <h3>📤 Interface de partage</h3>
+                <p>Partagez vos découvertes d'arbres comestibles et vos recettes via le protocole NOSTR.</p>
+                <ul class="features">
+                    <li>Connexion NOSTR sécurisée</li>
+                    <li>Ajout d'arbres et recettes</li>
+                    <li>Géolocalisation précise</li>
+                    <li>Upload d'images IPFS</li>
+                    <li>Affichage des messages</li>
+                </ul>
+                <div style="margin-top: 20px;">
+                    <span class="btn">Accéder à l'interface</span>
+                </div>
+            </a>
+
+            <!-- Interface d'administration -->
+            <a href="nostr-admin.html" class="nav-card">
+                <h3>⚙️ Administration</h3>
+                <p>Gérez la récolte des données NOSTR et analysez les statistiques de la communauté.</p>
+                <ul class="features">
+                    <li>Tableau de bord en temps réel</li>
+                    <li>Récolte automatique des données</li>
+                    <li>Recherche avancée</li>
+                    <li>Export GeoJSON/JSON</li>
+                    <li>Logs et monitoring</li>
+                </ul>
+                <div style="margin-top: 20px;">
+                    <span class="btn">Accéder à l'admin</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="info-section">
+            <h3>ℹ️ À propos du protocole NOSTR</h3>
+            <p>NOSTR (Notes and Other Stuff Transmitted by Relays) est un protocole décentralisé qui permet le partage de messages et de données sans serveur central. Urbanivore utilise NOSTR pour créer une communauté collaborative autour des arbres comestibles urbains.</p>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <h4>🔐 Décentralisé</h4>
+                    <p>Aucun serveur central, données distribuées sur plusieurs relais</p>
+                </div>
+                <div class="info-item">
+                    <h4>🌐 Interopérable</h4>
+                    <p>Compatible avec tous les clients NOSTR (Alby, nos2x, etc.)</p>
+                </div>
+                <div class="info-item">
+                    <h4>📍 Géolocalisé</h4>
+                    <p>Données spatiales précises pour chaque découverte</p>
+                </div>
+                <div class="info-item">
+                    <h4>🖼️ IPFS</h4>
+                    <p>Images stockées de manière décentralisée via IPFS</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html">← Retour à Urbanivore</a>
+        </div>
+    </div>
+
+    <script>
+        // Détection automatique de l'environnement IPFS
+        function detectIPFSEnvironment() {
+            const isIPFS = window.location.protocol === 'ipfs:' || 
+                          window.location.hostname.includes('ipfs') ||
+                          window.location.pathname.includes('/ipfs/');
+            
+            if (isIPFS) {
+                console.log('🌐 Environnement IPFS détecté');
+                // Ajouter des métadonnées pour IPFS
+                document.title = 'Urbanivore NOSTR - IPFS';
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            detectIPFSEnvironment();
+            
+            // Ajouter des événements de clic pour le tracking
+            document.querySelectorAll('.nav-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    console.log(`🌳 Navigation vers: ${href}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
