@@ -49,6 +49,7 @@
         .header h1 {
             background: linear-gradient(to right, #6b8e23, #4e6c13);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: 2.5em;
             margin-bottom: 10px;
@@ -436,7 +437,7 @@
                     <input type="password" id="pepper-input" placeholder="Laissez vide pour génération automatique">
                 </div>
                 
-                <button id="createAccountButton" class="btn btn-secondary">🎲 Créer un compte NOSTR</button>
+                <button id="createAccountButton" class="btn btn-secondary">🎲 Créer MULTIPASS</button>
             </div>
         </div>
 
@@ -602,7 +603,7 @@
 
     <script>
         // Configuration
-        const DEFAULT_RELAYS = [
+        let DEFAULT_RELAYS = [
             'wss://relay.copylaradio.com',
             'ws://127.0.0.1:7777',
             'wss://relay.damus.io',
@@ -666,15 +667,27 @@
             const port = currentURL.port;
             const protocol = currentURL.protocol.split(":")[0];
             
-            // Transformation uSPOT (ipfs. → u. et :8080 → :54321)
-            let upassportPort = port;
-            if (port === "8080") {
-                upassportPort = "54321";
+            let determinedUpassportUrl = '';
+            let determinedRelay = '';
+
+            if (hostname === "127.0.0.1" && port === "8080") {
+                determinedUpassportUrl = `http://127.0.0.1:54321`;
+                determinedRelay = `ws://127.0.0.1:7777`;
+            } else if (hostname.startsWith("ipfs.")) {
+                const baseDomain = hostname.substring("ipfs.".length);
+                determinedUpassportUrl = `${protocol}://u.${baseDomain}`;
+                determinedRelay = `wss://relay.${baseDomain}`;
+            } else {
+                // Fallback for other environments or if detection fails
+                determinedUpassportUrl = `https://u.copylaradio.com`;
+                determinedRelay = `wss://relay.copylaradio.com`; // Uplanet ORIGIN public relay
             }
-            const uHost = hostname.replace("ipfs", "u");
-            upassportUrl = protocol + "://" + uHost + (upassportPort ? (":" + upassportPort) : "");
+            
+            upassportUrl = determinedUpassportUrl;
+            DEFAULT_RELAYS = [determinedRelay, 'wss://relay.damus.io', 'wss://nos.lol'];
             
             log(`API uSPOT détectée: ${upassportUrl}`);
+            log(`Relay par défaut: ${DEFAULT_RELAYS[0]}`);
             log(`Gateway IPFS: ${hostname}:${port}`);
             
             // Mettre à jour l'affichage dans l'interface
@@ -761,6 +774,9 @@
                 const formData = new FormData();
                 formData.append('npub', publicKey);
                 
+                // Pass the relay URL being used by the client for NIP-42 authentication check
+                formData.append('relay_url', DEFAULT_RELAYS[0]);
+
                 const response = await fetch(`${upassportUrl}/api/test-nostr`, {
                     method: 'POST',
                     body: formData
@@ -779,6 +795,9 @@
                     } else if (data.status === 'partial') {
                         statusMessage = '⚠️ Connexion OK mais auth incomplète';
                         statusType = 'warning';
+                        
+                        // Si l'authentification est incomplète, essayer d'envoyer l'événement NIP-42
+                        // The logic to automatically send NIP-42 is now handled by the relay's `auth` event listener.
                     } else {
                         statusMessage = '❌ Échec de l\'authentification NOSTR';
                         statusType = 'error';
@@ -1154,41 +1173,63 @@
             try {
                 showLoading(true);
                 updateStatus('Connexion à NOSTR...', 'info');
-                
-                log('📡 Demande de clé publique...');
-                publicKey = await window.nostr.getPublicKey();
-                
+
+                if (window.nostr) {
+                    log('📡 Demande de clé publique via extension...');
+                    publicKey = await window.nostr.getPublicKey();
+                } else {
+                    // Fallback for manual key entry
+                    const nsec = prompt('Enter your nsec key:');
+                    if (nsec && nsec.startsWith('nsec1')) {
+                        try {
+                            const decoded = NostrTools.nip19.decode(nsec);
+                            privateKeyHex = decoded.data;
+                            publicKey = NostrTools.getPublicKey(privateKeyHex);
+                            log('✅ Conectado con clave manual, public key:', publicKey);
+                        } catch (error) {
+                            throw new Error('Invalid nsec key format: ' + error.message);
+                        }
+                    } else {
+                        throw new Error('No NOSTR extension found and no nsec key provided.');
+                    }
+                }
+
                 if (!publicKey || publicKey.length < 10) {
                     throw new Error('Clé publique invalide reçue');
                 }
-                
+
                 log(`✅ Connecté avec la clé: ${publicKey.slice(0, 10)}...`);
                 log(`📏 Longueur de la clé: ${publicKey.length} caractères`);
-                
+
                 document.getElementById('connectButton').style.display = 'none';
                 document.getElementById('refreshNostrButton').style.display = 'none';
                 document.getElementById('postButton').disabled = false;
-                
+
                 updateStatus(`Connexion réussie: ${publicKey.slice(0, 10)}...`, 'success');
-                
+
                 // Récupérer le profil et les messages
                 log('👤 Récupération du profil...');
                 await fetchProfileAndRelays(publicKey);
-                
+
                 log('📝 Récupération des messages...');
                 await refreshMessages();
-                
-                // Tester l'authentification NOSTR avec l'API uSPOT
+
+                // Initialize and connect to the relay
+                log('📡 Initialisation et connexion au relai...');
+                await connectToRelay();
+
+                // Test d'authentification NOSTR avec l'API uSPOT
                 log('🔐 Test d\'authentification NOSTR avec uSPOT...');
                 try {
+                    await new Promise(resolve => setTimeout(resolve, 2000)); // Add a 2-second delay
                     await testNostrAuth();
                 } catch (error) {
                     log(`⚠️ Test d'authentification échoué: ${error.message}`);
                     // Ne pas bloquer la connexion si le test échoue
                 }
-                
+
                 updateStatus(`Connecté: ${publicKey.slice(0, 10)}...`, 'success');
-                
+
             } catch (error) {
                 log(`❌ Erreur de connexion: ${error.message}`);
                 log(`📋 Détails de l'erreur:`, error);
@@ -1224,7 +1265,7 @@
                 }
                 
                 // Récupérer le profil
-                const profileEvents = await pool.list(DEFAULT_RELAYS, [
+                const profileEvents = await pool.list([DEFAULT_RELAYS[0]], [
                     { kinds: [0], authors: [pubkey], limit: 1 }
                 ]);
                 
@@ -1232,6 +1273,14 @@
                     const profileEvent = profileEvents[0];
                     try {
                         userProfile = JSON.parse(profileEvent.content);
+                        
+                        // Extract g1_address from tags if available
+                        const g1pubTag = profileEvent.tags.find(tag => tag[0] === 'i' && tag[1].startsWith('g1pub:'));
+                        if (g1pubTag) {
+                            userProfile.g1_address = g1pubTag[1].substring('g1pub:'.length);
+                            log(`G1 Address found in tags: ${userProfile.g1_address}`);
+                        }
+
                         renderProfile(pubkey, userProfile);
                         
                         // Vérifier les soldes si des adresses G1 sont présentes
@@ -1428,7 +1477,7 @@
                     pool = new NostrTools.SimplePool();
                 }
                 
-                const relays = await pool.publish(signedEvent, DEFAULT_RELAYS);
+                const relays = await pool.publish(signedEvent, [DEFAULT_RELAYS[0]]); // Use the calculated default relay
                 const successCount = relays.filter(r => r.status === 1).length;
                 
                 if (successCount > 0) {
@@ -1511,7 +1560,7 @@
             try {
                 updateStatus('Récupération des messages...', 'info');
                 
-                const events = await pool.list(DEFAULT_RELAYS, [
+                const events = await pool.list([DEFAULT_RELAYS[0]], [
                     { kinds: [1], authors: [publicKey], limit: 20 }
                 ]);
                 
@@ -1585,6 +1634,177 @@
                 log(`Erreur récupération messages: ${error.message}`);
                 updateStatus(`Erreur: ${error.message}`, 'error');
             }
+        }
+
+        async function connectToRelay() {
+            // Define NOSTRws, userPublicKey, and userPrivateKey if not already defined
+            // For simplicity, we'll use the first relay from DEFAULT_RELAYS
+            const NOSTRws = DEFAULT_RELAYS[0];
+            const userPublicKey = publicKey;
+            const userPrivateKey = privateKeyHex;
+
+            if (!NOSTRws) {
+                console.error("NOSTRws is not defined. Cannot connect to relay.");
+                updateConnectionStatus(false);
+                return;
+            }
+
+            console.log('Connecting to relay:', NOSTRws);
+
+            try {
+                // Initialize relay without event listeners (compatibility fix)
+                nostrRelay = NostrTools.relayInit(NOSTRws);
+
+                nostrRelay.on('connect', () => {
+                    console.log('✅ Connected to NOSTR relay:', NOSTRws);
+                    isNostrConnected = true;
+                    updateConnectionStatus(true);
+                });
+
+                nostrRelay.on('error', (error) => {
+                    console.error('❌ Relay connection error:', error);
+                    isNostrConnected = false;
+                    updateConnectionStatus(false);
+                });
+
+                nostrRelay.on('auth', async (challenge) => {
+                    console.log('🔐 Received AUTH challenge:', challenge);
+                    try {
+                        const authEvent = {
+                            kind: 22242,
+                            created_at: Math.floor(Date.now() / 1000),
+                            tags: [
+                                ['relay', NOSTRws],
+                                ['challenge', challenge]
+                            ],
+                            content: '',
+                            pubkey: userPublicKey
+                        };
+
+                        let signedAuthEvent;
+                        if (window.nostr) {
+                            signedAuthEvent = await window.nostr.signEvent(authEvent);
+                        } else if (userPrivateKey) {
+                            signedAuthEvent = NostrTools.finishEvent(authEvent, userPrivateKey);
+                        } else {
+                            console.error('No signing method available for NIP-42 auth');
+                            return;
+                        }
+
+                        console.log('✍️ Responding to AUTH challenge with NIP-42 event:', signedAuthEvent);
+                        await nostrRelay.publish(signedAuthEvent);
+
+                    } catch (authError) {
+                        console.error('❌ Error processing NIP-42 auth:', authError);
+                    }
+                });
+
+                console.log('Attempting relay connection...');
+                await nostrRelay.connect();
+
+                console.log('✅ Connected to NOSTR relay:', NOSTRws);
+                isNostrConnected = true;
+
+                // Simple status check
+                if (nostrRelay.status === 1) { // OPEN
+                    console.log('✅ Relay status: CONNECTED');
+                    // Wait a bit for the connection to be fully established
+                    setTimeout(() => {
+                        console.log('Sending NIP42 authentication after connection delay...');
+                        sendNIP42Auth();
+                    }, 500);
+                } else {
+                    console.log('⚠️ Relay status:', nostrRelay.status);
+                }
+            } catch (error) {
+                console.error('Failed to connect to relay:', error);
+                isNostrConnected = false;
+                throw error;
+            }
+        }
+
+        async function sendNIP42Auth() {
+            if (!nostrRelay || !userPublicKey) {
+                console.log('Cannot send NIP42 auth: missing relay or public key');
+                return;
+            }
+
+            let signedAuthEvent = null;
+
+            try {
+                console.log('Sending NIP42 authentication...');
+
+                // Create auth event (NIP42)
+                const authEvent = {
+                    kind: 22242,
+                    created_at: Math.floor(Date.now() / 1000),
+                    tags: [
+                        ['relay', NOSTRws],
+                        ['challenge', '']  // Empty challenge for now
+                    ],
+                    content: '',
+                    pubkey: userPublicKey
+                };
+
+                // Sign the event
+                if (window.nostr) {
+                    // Use extension
+                    signedAuthEvent = await window.nostr.signEvent(authEvent);
+                } else if (userPrivateKey) {
+                    // Use manual key
+                    signedAuthEvent = NostrTools.finishEvent(authEvent, userPrivateKey);
+                } else {
+                    console.error('No signing method available');
+                    return;
+                }
+
+                console.log('Signed NIP42 event:', signedAuthEvent);
+
+                // Try publishing via NostrTools first
+                try {
+                    console.log('Publishing NIP42 event via NostrTools...');
+                    const publishPromise = nostrRelay.publish(signedAuthEvent);
+
+                    // Don't wait too long for the publish response
+                    const timeoutPromise = new Promise((_, reject) => {
+                        setTimeout(() => reject(new Error('Publish timeout')), 3000);
+                    });
+
+                    const publishResult = await Promise.race([publishPromise, timeoutPromise]);
+                    console.log('✅ NIP42 authentication event published successfully');
+                    console.log('Publish result:', publishResult);
+
+                } catch (publishError) {
+                    console.log('⚠️ NostrTools publish failed or timed out, trying direct WebSocket...');
+                    console.log('Publish error:', publishError);
+
+                    // Use direct WebSocket as fallback
+                    tryDirectWebSocketSend(signedAuthEvent);
+                }
+
+            } catch (error) {
+                console.error('Failed to send NIP42 auth:', error);
+
+                // Last resort: try direct WebSocket
+                if (signedAuthEvent) {
+                    console.log('Trying direct WebSocket as last resort...');
+                    tryDirectWebSocketSend(signedAuthEvent);
+                }
+            }
+        }
+
+        function tryDirectWebSocketSend(event) {
+            // Placeholder for direct WebSocket send logic
+            console.warn('Direct WebSocket send not implemented. Event:', event);
+            // You would typically stringify the event and send it via the raw WebSocket connection
+            // if (nostrRelay.ws.readyState === WebSocket.OPEN) {
+            //     nostrRelay.ws.send(JSON.stringify(["EVENT", event]));
+            // }
+        }
+
+        function updateConnectionStatus(isConnected) {
+            // You can update a UI element here to reflect the connection status
+            log(`Relay connection status: ${isConnected ? 'Connected' : 'Disconnected'}`);
         }
     </script>
 </body>

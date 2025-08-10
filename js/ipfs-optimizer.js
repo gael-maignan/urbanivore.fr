@@ -367,7 +367,7 @@ class UrbanivoreIPFSOptimizer {
             async init() {
                 try {
                     const baseURL = this.getUSPOTBaseURL();
-                    const response = await fetch(`${baseURL}/api/uspot/status`);
+                    const response = await fetch(`${baseURL}/health`);
                     if (response.ok) {
                         this.api = await response.json();
                         return true;
@@ -378,35 +378,93 @@ class UrbanivoreIPFSOptimizer {
                 return false;
             },
             
-            // Obtenir des données géographiques
-            async getGeoData(lat, lon, radius = 1000) {
+            // Tester l'authentification NOSTR
+            async testNostrAuth(npub) {
                 if (!this.isAvailable) return null;
                 
                 try {
                     const baseURL = this.getUSPOTBaseURL();
-                    const response = await fetch(`${baseURL}/api/uspot/geo?lat=${lat}&lon=${lon}&radius=${radius}`);
+                    const formData = new FormData();
+                    formData.append('npub', npub);
+                    
+                    const response = await fetch(`${baseURL}/api/test-nostr`, {
+                        method: 'POST',
+                        body: formData
+                    });
                     return response.ok ? await response.json() : null;
                 } catch (error) {
-                    console.warn('Erreur uSPOT geo:', error);
+                    console.warn('Erreur test NOSTR:', error);
                     return null;
                 }
             },
             
-            // Publier des données
-            async publishData(data) {
-                if (!this.isAvailable) return false;
+            // Vérifier le solde G1
+            async checkG1Balance(g1pub) {
+                if (!this.isAvailable) return null;
                 
                 try {
                     const baseURL = this.getUSPOTBaseURL();
-                    const response = await fetch(`${baseURL}/api/uspot/publish`, {
+                    const response = await fetch(`${baseURL}/check_balance?g1pub=${g1pub}`);
+                    return response.ok ? await response.json() : null;
+                } catch (error) {
+                    console.warn('Erreur vérification solde G1:', error);
+                    return null;
+                }
+            },
+            
+            // Upload de fichier avec authentification NOSTR
+            async uploadFile(file, npub) {
+                if (!this.isAvailable) return null;
+                
+                try {
+                    const baseURL = this.getUSPOTBaseURL();
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('npub', npub);
+                    
+                    const response = await fetch(`${baseURL}/api/upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    return response.ok ? await response.json() : null;
+                } catch (error) {
+                    console.warn('Erreur upload fichier:', error);
+                    return null;
+                }
+            },
+            
+            // Créer une ressource Urbanivore
+            async createUrbanivoreResource(resourceData, npub) {
+                if (!this.isAvailable) return null;
+                
+                try {
+                    const baseURL = this.getUSPOTBaseURL();
+                    const response = await fetch(`${baseURL}/api/urbanivore/resource`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
+                        body: JSON.stringify({
+                            ...resourceData,
+                            npub: npub
+                        })
                     });
-                    return response.ok;
+                    return response.ok ? await response.json() : null;
                 } catch (error) {
-                    console.warn('Erreur uSPOT publish:', error);
-                    return false;
+                    console.warn('Erreur création ressource Urbanivore:', error);
+                    return null;
+                }
+            },
+            
+            // Lister les ressources Urbanivore
+            async listUrbanivoreResources(npub, limit = 50) {
+                if (!this.isAvailable) return null;
+                
+                try {
+                    const baseURL = this.getUSPOTBaseURL();
+                    const response = await fetch(`${baseURL}/api/urbanivore/resources?npub=${npub}&limit=${limit}`);
+                    return response.ok ? await response.json() : null;
+                } catch (error) {
+                    console.warn('Erreur liste ressources Urbanivore:', error);
+                    return null;
                 }
             },
             

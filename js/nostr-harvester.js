@@ -13,12 +13,18 @@ class UrbanivoreNostrHarvester {
     constructor() {
         this.pool = null;
         this.relays = [
-            'wss://relay.copylaradio.com',
-            'ws://127.0.0.1:7777',
-            'wss://relay.damus.io',
-            'wss://nos.lol',
-            'wss://relay.snort.social',
-            'wss://relay.nostr.band'
+            'wss://relay.copylaradio.com',  // UPlanet ORIGIN relay
+            'ws://127.0.0.1:7777',          // Local relay (Astroport.ONE)
+            'wss://relay.damus.io',         // Public relay
+            'wss://nos.lol',                // Public relay
+            'wss://relay.snort.social',     // Public relay
+            'wss://relay.nostr.band'        // Public relay
+        ];
+        
+        // Relais prioritaires (locaux et UPlanet)
+        this.priorityRelays = [
+            'ws://127.0.0.1:7777',          // Local relay
+            'wss://relay.copylaradio.com'   // UPlanet relay
         ];
         
         this.collectedEvents = [];
@@ -121,6 +127,37 @@ class UrbanivoreNostrHarvester {
     }
 
     /**
+     * Tester la connectivité des relais
+     */
+    async testRelayConnectivity() {
+        const results = {};
+        
+        for (const relay of this.relays) {
+            try {
+                const startTime = Date.now();
+                const response = await fetch(relay.replace('ws', 'http').replace('wss', 'https') + '/health', {
+                    method: 'GET',
+                    timeout: 5000
+                });
+                const endTime = Date.now();
+                
+                results[relay] = {
+                    connected: response.ok,
+                    latency: endTime - startTime,
+                    status: response.status
+                };
+            } catch (error) {
+                results[relay] = {
+                    connected: false,
+                    error: error.message
+                };
+            }
+        }
+        
+        return results;
+    }
+
+    /**
      * Récupérer les événements Urbanivore depuis les relais
      */
     async fetchUrbanivoreEvents() {
@@ -129,10 +166,23 @@ class UrbanivoreNostrHarvester {
         }
         
         try {
+            // Tester d'abord les relais prioritaires
+            const connectivity = await this.testRelayConnectivity();
+            const availableRelays = this.relays.filter(relay => 
+                connectivity[relay]?.connected
+            );
+            
+            if (availableRelays.length === 0) {
+                console.warn('⚠️ Aucun relai NOSTR disponible');
+                return [];
+            }
+            
+            console.log(`📡 Relais disponibles: ${availableRelays.length}/${this.relays.length}`);
+            
             // Récupérer les événements des dernières 24h
             const since = Math.floor((Date.now() - 24 * 60 * 60 * 1000) / 1000);
             
-            const events = await this.pool.list(this.relays, [
+            const events = await this.pool.list(availableRelays, [
                 {
                 kinds: [1],
                 since: since,
