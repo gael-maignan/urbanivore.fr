@@ -1,0 +1,601 @@
+Genre;espèce;Nom français;Comestible
+Abelia;x grandiflora;Abélia;false
+Prunus;armeniaca;Abricotier;true
+Prunus;mume;Abricotier du Japon;true
+Achillea;millefolium;Achillée millefeuille;true
+Achillea;ptarmica;Achillée sternutatoire à fleurs doubles;true
+Actaea;spicata;Actée en épis;false
+Ailanthus;altissima;Ailante, Faux vernis du Japon;false
+Akebia;quinata;Akebia;false
+Sorbus;aria;Alisier blanc, Alouchier;true
+Alyssum;saxatile;Alysse des rochers, Corbeille d'or;false
+Prunus;tenella;Amandier nain;true
+Amelanchus;canadensis;Amélanchier;true
+Amelanchier;ovalis;Amélanchier;true
+Amelanchier;lamarckii;Amélanchier;true
+Prunus;dulcis;Amandier;true
+Aquilegia;vulgaris;Ancolie vulgaire;false
+Pieris;japonica;Andromède;false
+Anemone;Japonica;Anémone du Japon;false
+Aralia;elata;Angélique en arbre du Japon;false
+Arabis;arendsii;Arabette
+Arabis;procurrens;Arabette
+Arabis;caucasica;Arabette du Caucase
+Arbutus;unedo;Arbousier;true
+Buddleja;alternifolia;Arbre aux papillons
+Buddleja;Davidii;Arbre aux papillons
+Cercis;siliquastrum;Arbre de Judée;true
+Cotinus;coggygria;Arbre à perruques;false
+Aristolochia;macrophylla;Aristoloche siphon
+Artemisia;stelleriana;Armoise des côtes d'Extrême-Orient
+Artemisia;maritima;Armoise
+Aronia;melanocarpa;Aronia
+Polystichum;polyblepharum;Aspidie du Japon
+Polystichum;setiferum;Aspidie
+Aster;novae-angliae;Aster de Nouvelle-Angleterre
+Aster;ericoides;Aster éricoïde
+Boltonia;asteroides;Aster étoilé
+Astilbe;thunbergii;Astilbe
+Astilbe;japonica;Astilbe du Japon
+Astilbe;chinensis;Astilbe naine
+Crataegus;laevigata;Aubépine;true
+Aucuba;japonica;Aucuba
+Alnus;hirsuta;Aulne
+Azalea;mollis;Azalée caduque
+Azalea;japonica;Azalée japonaise
+Rhododendron;japonica;Azalée japonaise
+Colutea;arborescens;Baguenaudier;false
+Bambusa;glaucescens;Bambou
+Bambusa;multiplex;Bambou
+Phyllostachys;henonis;Bambou
+Sasa;palmata;Bambou nain
+Sasa;pumila;Bambou nain
+Sasa;veitchii;Bambou nain
+Otatea;acuminata;Bambou Otatea
+Phyllostachys;aureosulcata;Bambou Phyllostachys
+Pleioblastus;humilis;Bambou Pleioblastus nain
+Pleioblastus;pygmaeus;Bambou Pleioblastus nain
+Sasaella;glabra;Bambou Sasaella
+Berberis;darwinii;Berberis
+Berberis;buxifolia;Berbéris à feuilles de buis
+Berberis;x ottawensis;Berberis pourpre
+Berberis;candidula;Berbéris, Epine-vinette
+Bergenia;stracheyi;Bergenia
+Campsis;radicans;Bignone, Trompette de Jérico
+Campsis;x tagliabuana;Bignone
+Campsis;radicans;Bignone de Virginie
+Macleaya;cordata;Boconie à feuilles en coeur
+Macleaya;microcarpa;Boconie à petits fruits
+Echinops;banaticus;Boule bleue
+Viburnum;opulus;Boule de neige
+Betula;pendula;Bouleau blanc;false
+Betula;utilis;Bouleau de l'Himalaya;false
+Betula;nigra;Bouleau noir;false
+Betula;pendula;Bouleau pleureur;false
+Calluna;vulgaris;Bruyère commune
+Erica;vagans;Bruyère de cornouailles
+Erica;carnea;Bruyère des neiges
+Erica;tetralix;Bruyère à fleurs en croix
+Erica;X Darleyensis;Bruyère hybride
+Daboecia;cantabrica;Bruyère irlandaise
+Erica;ciliaris;Bruyère ciliée
+Erica;vagans;Bruyère vagabonde
+Ajuga;reptans;Bugle rampante
+Buxus;sempervirens;Buis;false
+Pyracantha;coccinea;Buisson ardent
+Kolkwitzia;amabilis;Buisson de beauté
+Cedrus;deodara;Cèdre
+Calamagrostis;acutiflora;Calamagrostis
+Callicarpa;bodinieri;Callicarpa
+Camellia;japonica;Camélia;false
+Camellia;sasanqua;Camélia;false
+Camellia;x williamsii;Camélia;false
+Campanula;persicifolia;Campanule à feuilles de pêcher
+Campanula;carpatica;Campanule des Carpathes en toupie
+Arundo;donax;Canne de Provence
+Adiantum;pedatum;Capillaire pédalée, Fougère fer-à-cheval
+Capparis;spinosa;Caprier
+Caragana;arborescens;Caragana
+Carlina;acaulis;Carline à tige courte, Carline argentée
+Caryopteris;x clandonensis;Caryopteris
+Ribes;nigrum;Cassissier
+Catalpa;bignonioides;Catalpa boule;false
+Ceanothus;x delilianus;Ceanothe
+Ceanothus;arboreus;Céanothe
+Ceanothus;impressus;Céanothe
+Ceanothus;thyrsiflorus;Céanothe
+Ceanothus;x delilianus;Céanothe
+Cedrus;deodara;Cèdre de l'himalaya;false
+Centaurea;montana;Centaurée des montagnes
+Prunus;cerasus;Cerisier;true
+Prunus;serrulata;Cerisier à fleurs;false
+Prunus;serrula;Cerisier du Tibet;false
+Carpinus;betulus;Charme;true
+Castanea;sativa;Châtaignier;true
+Lonicera;japonica;Chèvrefeuille;false
+Lonicera;x Heckrottii;Chèvrefeuille;false
+Quercus;phellos;Chêne;true
+Quercus;cerris;Chêne;true
+Quercus;frainetto;Chêne;true
+Quercus;palustris;Chêne;true
+Quercus;coccinea;Chêne;true
+Quercus;robur;Chêne;true
+Quercus;rubra;Chêne;true
+Quercus;petraea;Chêne;true
+Lonicera;tatarica;Chèvrefeuille de Tatarie;false
+Chimonanthus;praecox;Chimonanthe odorant;false
+Cimicifuga;simplex;Cierge d'argent
+Cistus;x aguilari;Ciste
+Cistus;x argenteus;Ciste
+Cistus;x corbariensis;Ciste
+Cistus;x purpureus;Ciste
+Clematis;alpina;Clématite
+Clematis;armandii;Clématite
+Clematis;florida;Clématite
+Clematis;macropetala;Clématite
+Clematis;texensis;Clématite
+Clematis;viticella;Clématite
+Clematis;chrysocoma;Clématite
+Clematis;montana;Clématite des montagnes
+Clematis;tangutica;Clématite
+Lonicera;involucrata;Clématite
+Lonicera;xylosteoides;Clématite
+Clematis;Patens.;Clématite hybride
+Clematis;lanuginosa;Clématite à grandes fleurs
+Lonicera;periclymenum;Clématite des bois
+Clerodendrum;trichotomum;Clérodendron;false
+Clerodendrum;ugandense;Clérodendron;false
+Chaenomeles;speciosa;Cognassier du Japon
+Chaenomeles;x superba;Cognassier du Japon
+Colchicum;speciosum;Colchique
+Symphytum;grandiflorum;Consoude à grandes fleurs
+Kerria;japonica;Corête du japon
+Cornus;controversa;Cornouiller;true
+Cornus;kousa;Cornouiller;true
+Cornus;stolonifera;Cornouiller;true
+Cornus;alba;Cornouiller;true
+Cornus;florida;Cornouiller;true
+Cornus;kousa;Cornouiller;true
+Cornus;mas;Cornouiller;true
+Corylopsis;pauciflora;Corylopsis
+Cotoneaster;horizontalis;Cotoneaster
+Cotoneaster;salicifolius;Cotonéaster à feuilles de saule
+Fritillaria;imperialis;Couronne impériale
+Cryptomeria;japonica;Cryptomeria;false
+Cyclamen;europaeum;Cyclamen d'Europe
+Cyclamen;coum;Cyclamen de Kos
+Cupressus;macrocarpa;Cyprès de l'Arizona;false
+Chamaecyparis;pisifera;Cyprès à pois;false
+Chamaecyparis;lawsoniana;Cyprès de Lawson;false
+x Cupressocyparis;leylandii;Cyprès de leyland;false
+Chamaecyparis;nootkatensis;Cyprès de Nootka;false
+Cupressus;sempervirens;Cyprès de provence;false
+Chamaecyparis;obtusa;Cyprès nain;false
+Chamaecyparis;pisifera;Cyprès porte-pois;false
+Laburnum;watereri;Cytise
+Laburnum;watereri;Cytise de Voss;false
+Deutzia;gracilis;Deutzia
+Deutzia;scabra;Deutzia
+Deutzia;x elegantissima;Deutzia
+Deutzia;x hybrida;Deutzia
+Deutzia;x rosea;Deutzia
+Dicentra;eximia;Dicentra
+Dicentra;formosa;Dicentra
+Doronicum;orientale;Doronic du Caucase
+Doronicum;plantagineum;Doronic plantain
+Dryas;octopetala;Dryade à huit pétales
+Echinacea;purpurea;Echinacée pourpre
+Elaeagnus;x ebbingei;Elaeagnus
+Elsholtzia;stauntonii;Elsholtzia
+Enkianthus;campanulatus;Enkianthus
+Stachys;byzantina;Epiaire laineuse
+Picea;abies;Epicéa;false
+Picea;glauca;Epicéa;false
+Picea;orientalis;Epicéa;false
+Picea;glauca;Epicéa blanc;false
+Picea;abies;Epicéa commun;false
+Picea;omorika;Epicéa de Serbie;false
+Picea;pungens;Epicéa du Colorado;false
+Picea;jezoensis;Epicéa du Japon;false
+Berberis;thunbergii;Epine-Vinette
+Acer;buergerianum;Erable;false
+Acer;negundo;Erable;false
+Acer;saccharinum;Erable;false
+Acer;negundo;Erable à feuilles de frêne panachées;false
+Acer;saccharinum;Erable argenté;false
+Acer;davidii;Erable de David;false
+Acer;japonicum;Erable du Japon;false
+Acer;palmatum;Erable du Japon;false
+Acer;negundo;Erable negundo, Erable à feuilles de frêne;false
+Acer;platanoides;Erable;false
+Acer;rubrum;Erable rouge;false
+Acer;pseudoplatanus;Erable sycomore;false
+Euphorbia;myrsinites;Euphorbe de Corse
+Euphorbia;amygdaloides;Euphorbe faux-amandier
+Euonymus;fortunei;Evonymus
+Exochorda;x macrantha;Exochorda
+Exochorda;giraldii;Exochorde
+Chamaecyparis;obtusa;Faux cyprès;false
+Chamaecyparis;pisifera;Faux cyprès;false
+Chamaecyparis;lawsoniana;Faux cyprès de Lawson;false
+Chamaecyparis;obtusa;Faux-cyprès;false
+Chamaecyparis;thyoïdes;Faux-cyprès;false
+Gleditsia;triacanthos;Févier;false
+Ranunculus;ficaria;Ficaire
+Ficus;carica;Figuier;true
+Opuntia;phaeacantha;Figuier de Barbarie à fruits violets;false
+Epimedium;pinnatum;Fleur des elfes
+Epimedium;warleyense;Fleur des elfes
+Epimedium;youngianum;Fleur des elfes
+Passiflora;edulis;Fleur de la passion
+Forsythia;x intermedia;Forsythia
+Dryopteris;affinis;Fougère à écailles dorées
+Rubus;idaeus;Framboisier
+Fraxinus;excelsior;Frêne;true
+Fraxinus;angustifolia;Frêne;true
+Fuchsia;magellanica;Fuchsia
+Euonymus;fortunei;Fusain;false
+Euonymus;hamiltonianus;Fusain;false
+Euonymus;phellomanus;Fusain;false
+Euonymus;planipes;Fusain;false
+Euonymus;alatus;Fusain ailé;false
+Euonymus;fortunei;Fusain du Japon;false
+Euonymus;japonicus;Fusain du Japon;false
+Juniperus;chinensis;Genévrier;false
+Juniperus;communis;Genévrier;false
+Juniperus;horizontalis;Genévrier;false
+Juniperus;scopulorum;Genévrier;false
+Juniperus;squamata;Genévrier;false
+Juniperus;virginiana;Genévrier;false
+Juniperus;x media;Genévrier;false
+Cytisus;x praecox;Genêt
+Cytisus;scoparius;Genêt à balais
+Genista;tinctoria;Genêt des teinturiers
+Cytisus;x praecox;Genêt hybride précoce
+Genista;pilosa;Genêt poilu
+Juniperus;sabina;Genévrier sabine;false
+Gentiana;septemfida;Gentiane d'été
+Geranium;cantabrigiense;Géranium
+Geranium;clarkei;Géranium
+Geranium;pratense;Géranium des prés
+Geranium;sanguineum;Géranium sanguin
+Wisteria;sinensis;Glycine;true
+Wisteria;floribunda;Glycine;true
+Sedum;telephium;Grand orpin, Orpin
+Delphinium;Elatum;Grande dauphinelle, pied d' Alouette
+Vinca;major;Grande pervenche
+Vinca;minor;Petite pervenche
+Punica;granatum;Grenadier;true
+Grevillea;rosmarinaefolia;Grévillea
+Ribes;sanguineum;Groseillier à fleurs
+Ribes;uva-crispa;Groseillier à maquereaux
+Ribes;rubrum;Groseillier rouge
+Gypsophila;repens;Gypsophile rampante
+Hamamelis;mollis;Hamamelis
+Hamamelis;x intermedia;Hamamelis
+Hamamelis;japonica;Hamamélis du Japon
+Helenium;bigelovii;Hélénium
+Heliopsis;helianthoides;Héliopsis
+Hemerocallis;fulva;Hémérocalle
+Cortaderia;selloana;Herbe de la pampa
+Fagus;sylvatica;Hêtre;true
+Hibiscus;palustris;Hibiscus
+Hibiscus;syriacus;Hibiscus de Syrie
+Hydrangea;aspera;Hortensia
+Hydrangea;macrophylla;Hortensia
+Hydrangea;quercifolia;Hortensia à feuilles de chêne
+Hydrangea;macrophylla;Hortensia à grandes feuilles
+Hydrangea;petiolaris;Hortensia grimpant
+Hydrangea;paniculata;Hortensia paniculé
+Hosta;sieboldii;Hosta à feuilles étroites
+Hosta;fortunei;Hosta à feuilles jaunes
+Hosta;ventricosa;Hosta campanulée
+Ilex;aquifolium;Houx;false
+Ilex;cornuta;Houx;false
+Ilex;crenata;Houx;false
+Ilex;verticillata;Houx;false
+Ilex;x atlaclarensis;Houx;false
+Ilex;x meserveae;Houx Américain;false
+Hutchinsia;alpina;Hutchinsie des Alpes
+Taxus;baccata;If;false
+Taxus;x media;If;false
+Indigofera;gerardiana;Indigotier
+Iris;pseudacorus;Iris des marais
+Iris;Barbata;Iris nain des jardins
+Iris;suaveolens;Iris odorant
+Jovibarba;heuffelii;Joubarbe
+Jovibarba;hirta;Joubarbe
+Sempervivum;marmoreum;Joubarbe
+Sempervivum;arachnoideum;Joubarbe aranéeuse
+Sempervivum;ciliosum;Joubarbe ciliée
+Sempervivum;montanum;Joubarbe des montagnes
+Kalmia;latifolia;Kalmia
+Kalopanax;pictus;Kalopanax du Japon
+Carex;elata;Laîche élevée
+Lamiastrum;galeobdolon;Lamier doré
+Lamium;maculatum;Lamier maculé
+Narcissus;triandrus;Larme d'ange
+Prunus;laurocerasus;Laurier cerise;false
+Prunus;lusitanica;Laurier du Portugal;false
+Nerium;oleander;Laurier rose;false
+Viburnum;tinus;Laurier tin;false
+Prunus;laurocerasus;Laurier-cerise;false
+Lavandula;angustifolia;Lavande
+Lavandula;x intermedia;Lavande
+Lavandula;angustifolia;Lavande vraie
+Lavatera;thuringiaca;Lavatère
+Leptospermum;species;Leptospermum
+Lespedeza;thunbergii;Lespedeza
+Leucothoe;fontanesiana;Leucothoë
+Hedera;colchica;Lierre
+Hedera;helix;Lierre
+Hedera;colchica;Lierre du Caucase
+Hedera;helix;Lierre grimpant
+Syringa;afghanica;Lilas;false
+Syringa;microphylla;Lilas;false
+Buddleia;;Lilas d'été;false
+Syringa;vulgaris;Lilas;true
+Melia;azedarach;Lilas des indes;false
+Lagerstroemia;indica;Lilas des indes, lilas d'été;false
+Syringa;josikaea;Lilas;true
+Phormium;tenax;Lin de Nouvelle-Zélande
+Tricyrtis;hirta;Lis crapaud
+Lonicera;nitida;Lonicera
+Lupinus;Polyphyllus;Lupin vivace
+Magnolia;stellata;Magnolia;true
+Magnolia;x loebneri;Magnolia;true
+Magnolia;x soulangiana;Magnolia;true
+Mahonia;x media;Mahonia
+Larix;kaempferi;Mélèze
+Leucanthemum;superbum;Marguerite d'été
+Aesculus;hippocastanum;Marronnier d'Inde;false
+Aesculus;carnea;Marronnier rouge;false
+Malva;alcea;Mauve alcée
+Hibiscus;syriacus;Mauve en arbre;false
+Prunus;padus;Merisier à grappes;false
+Prunus;avium;Merisier, Cerisier des oiseaux;false
+Microbiota;decussata;Microbiota
+Hypericum;frondosum;Millepertuis
+Hypericum;inodorum;Millepertuis
+Hypericum;moserianum;Millepertuis
+Verbascum;longifolium;Molène de Pannonie
+Convallaria;majalis;Muguet
+Morus;alba;Mûrier blanc;true
+Prunus;cerasifera;Myrobolan, Prunier-cerise;false
+Nandina;domestica;Nandina
+Prunus;persica;Nectarinier, Pêcher
+Corylus;avellana;Noisetier;true
+Corylus;colurna;Noisetier;true
+Corylus;maxima;Noisetier franc;false
+Nymphaea;tetragona;Nymphéa
+Aster;amellus;Oeil de Christ
+Dianthus;gratianopolitanus;Oeillet de la Pentecôte
+Olea;europea;Olivier;false
+Elaeagnus;angustifolia;Olivier de bohême;false
+Maclura;pomifera;Oranger des Osages;false
+Choisya;ternata;Oranger du Mexique;false
+Ulmus;minor;Orme champêtre, Ormeau;false
+Ulmus;glabra;Orme de montagne, Orme blanc;false
+Sedum;cauticola;Orpin
+Sedum;acre;Orpin âcre, Poivre des murailles
+Sedum;spurium;Orpin bâtard
+Sedum;album;Orpin blanc
+Sedum;forsterianum;Orpin de Forster
+Salix;purpurea;Osier rouge, Saule pourpre
+Salix;viminalis;Osier vert, Osier des vanniers;false
+Osmanthus;heterophyllus;Osmanthe;true
+Parrotia;persica;Parrotie de Perse;false
+Aesculus;parviflora;Pavier blanc
+Aesculus;pavia;Pavier rouge;false
+Papaver;orientale;Pavot d'Orient
+Prunus;persica;Pêcher;true
+Penstemon;campanulatus;Penstemon campanulé
+Pernettya;mucronata;Pernettya
+Populus;alba;Peuplier blanc;false
+Populus;simonii;Peuplier de Simon;false
+Populus;tremula;Peuplier tremble;false
+Phalaris;arundinacea;Phalaris-roseau, Baldingère
+Phlox;divaricata;Phlox
+Phlox;nivalis;Phlox
+Phlox;douglasii;Phlox de Douglas
+Phlox;paniculata;Phlox des jardins
+Phlox;subulata;Phlox mousse
+Photinia;villosa;Photinia;false
+Physocarpus;opulifolius;Physocarpus
+Thalictrum;flavum;Pigamon jaune
+Pinus;leucodermis;Pin
+Pinus;mugo;Pin;false
+Pinus;pumila;Pin;false
+Pinus;cembra;Pin cembro, Arolle;false
+Pinus;leucodermis;Pin de Bosnie;false
+Pinus;wallichiana;Pin de l'Himalaya nain;false
+Pinus;strobus;Pin de Weymouth;false
+Pinus;mugo;Pin des montagnes;false
+Pinus;nigra;Pin noir;false
+Pinus;sylvestris;Pin sylvestre;true
+Pittosporum;tenuifolium;Pittospore
+Pittosporum;tobira;Pittosporum;false
+Paeonia;tenuifolia;Pivoine à feuilles menues
+Paeonia;lactiflora;Pivoine de Chine
+Paeonia;suffruticosa;Pivoine en arbre
+Platanus;x acerifolia;Platane;false
+Platanus;orientalis;Platane d'Orient;false
+Platycodon;grandiflorus;Platycodon à grandes fleurs
+Pyrus;communis;Poirier;true
+Malus;pumila;Pommier;true
+Malus;toringo;Pommier d'ornement;false
+Malus;domestica;Pommier;true
+Caltha;palustris;Populage des marais
+Caltha;palustris;Populage des marais, Populage à fleurs pleines
+Potentilla;fruticosa;Potentille
+Potentilla;fruticosa;Potentille arbustive
+Potentilla;aurea;Potentille dorée
+Primula;alpicola;Primevère
+Prunus;domestica;Prunier;true
+Pterocarya;fraxinifolia;Ptérocaryer du Caucase;false
+Pulsatilla;halleri;Pulsatille de Haller
+Raphiolepis;x delacourii;Raphiolepis
+Rhododendron;calostrotum;Rhododendron
+Rhododendron;campanulatum;Rhododendron
+Rhododendron;fortunei;Rhododendron
+Rhododendron;keleticum;Rhododendron
+Rhododendron;smirnowii;Rhododendron de Smirnow
+Rhododendron;yakushimanum;Rhododendron de Yakushima
+Robinia;margaretta;Robinier;false
+Robinia;pseudoacacia;Robinier, Faux acacia;true
+Rosmarinus;officinalis;Romarin
+Rubus;spectabilis;Ronce
+Rubus;thibetanus;Ronce
+Rubus;tricolor;Ronce
+Rubus;henryi;Ronce de Henry
+Rubus;fruticosus;Ronce des bois, Ronce commune
+Phragmitis;australis;Roseau
+Rosa;canina;Rosier
+Rosa;damascena;Rosier de Damas
+Rosa;gallica;Rosier de France, Rosier de Provins
+Rosa;rugosa;Rosier du Japon
+Lythrum;salicaria;Salicaire
+Sanguinaria;canadensis;Sanguisorbe du Canada, Sanguisorbe à feuilles
+Picea;pungens;Sapin bleu;false
+Abies;pinsapo;Sapin d'Espagne;false
+Abies;koreana;Sapin de Corée;false
+Abies;cephalonica;Sapin de Grèce;false
+Abies;nordmanniana;Sapin du Caucase;false
+Picea;orientalis;Sapin du Caucase;false
+Abies;concolor;Sapin du Colorado;false
+Picea;orientalis;Sapinette d'Orient;false
+Satureja;montana;Sarriette vivace
+Salvia;azurea;Sauge azurée
+Salvia;pratensis;Sauge des prés
+Salix;gracilistyla;Saule;false
+Salix;integra;Saule;false
+Salix;alba;Saule blanc;false
+Salix;cinerea;Saule cendré;false
+Salix;elaeagnos;Saule drapé;false
+Salix;caprea;Saule marsault;false
+Salix;caprea;Saule marsault pleureur;false
+Salix;babylonica;Saule pleureur;false
+Salix;repens;Saule rampant argenté;false
+Salix;matsudana;Saule tortueux;false
+Saxifraga;marginata;Saxifrage
+Saxifraga;callosa;Saxifrage calleux
+Saxifraga;burseriana;Saxifrage de Burser
+Saxifraga;hypnoides;Saxifrage faux-hypne
+Saxifraga;urbium;Saxifrage panaché
+Saxifraga;paniculata;Saxifrage paniculé
+Eleocharis;acicularis;Scirpe épingle
+Phyllitis;scolopendrium;Scolopendre
+Philadelphus;x cymosus;Seringat
+Silene;acaulis;Silène acaule
+Helianthus;decapetalus;Soleil vivace
+Sorbus;umbellata;Sorbier;false
+Sorbus;aucuparia;Sorbier des oiseleurs;false
+Spiraea;betulifolia;Spirée
+Spiraea;japonica;Spirée
+Spiraea;nipponica;Spirée
+Spiraea;prunifolia;Spirée
+Spiraea;thunbergii;Spirée
+Spiraea;veitchii;Spirée
+Spiraea;x bumalda;Spirée
+Spiraea;japonica;Spirée du Japon
+Filipendula;rubra;Spirée filipendule
+Goniolimon;tataricum;Statice de Tartarie
+Rhus;typhina;Sumac de Virginie;true
+Sambucus;racemosa;Sureau;true
+Sambucus;nigra;Sureau;true
+Symphoricarpos;albus;Symphorine
+Symphoricarpos;x chenaultii;Symphorine
+Symphoricarpos;x doorenbosii;Symphorine
+Tanacetum;coccineum;Tanaisie
+Iberis;sempervirens;Thlaspi toujours vert
+Thuja;plicata;Thuja;false
+Thuja;orientalis;Thuja de Chine;false
+Thuja;occidentalis;Thuja du Canada;false
+Thuja;occidentalis;Thuya;false
+Thuja;orientalis;Thuya d'Orient, Thuya de Chine;false
+Thuja;occidentalis;Thuya occidental, Arbre de paradis;false
+Thymus;citriodorus;Thym à odeur de citron
+Thymus;praecox;Thym précoce
+Tilia;cordata;Tilleul;true
+Tilia;platyphyllos;Tilleul;true
+Tilia;cordata;Tilleul;true
+Ligustrum;obtusifolium;troène;false
+Ligustrum;vulgare;Troène;false
+Ligustrum;ovalifolium;Troène de Californie;false
+Trollius;chinensis;Trolle de Chine
+Narcissus;bulbocodium;Trompette de Méduse
+Tulipa;x;Tulipe
+Liriodendron;tulipifera;Tulipier de Virginie;false
+Polemonium;caeruleum;Valériane grecque
+Hebe;pinguifolia;Véronique arbustive
+Veronica;spicata;Véronique en épis
+Veronica;austriaca;Véronique germandrée
+Vitis;species;Vigne de Table
+Parthenocissus;quinquefolia;Vigne vierge
+Parthenocissus;tricuspidata;Vigne vierge
+Viola;cornuta;Violette cornue
+Viola;odorata;Violette odorante
+Viburnum;carlesii;Viorne
+Viburnum;plicatum;Viorne
+Viburnum;plicatum;Viorne de Chine
+Viburnum;tinus;Viorne tin;false
+Viburnum;opulus;Viorne obier, Boule de neige
+Amelanchier;arborea;Amélanchier;true
+Cornus;sp.;Cornouiller;true
+Castanea;sp.;Châtaignier;true
+Cornus;sanguinea;Cornouiller;true
+Amelanchier;sp.;Amélanchier;true
+Crataegus;x media;Aubépine;true
+Crataegus;monogyna;Aubépine;true
+Cydonia;oblonga;Cognassier;true
+Cornus;officinalis;Cornouiller;true
+Crataegus;x lavalleei;Aubépine;true
+Crataegus;x persimilis;Aubépine;true
+Amelanchier;alnifolia;Amélanchier;true
+Crataegus;sp.;Aubépine;true
+Crataegus;x mordenensis;Aubépine;true
+Amelanchier;laevis;Amélanchier;true
+Crataegus;monogyna;Aubépine;true
+Amelanchier;;Amélanchier;true
+Crataegus;x persimilis;Aubépine;true
+Crataegus;coccinioides;Aubépine;true
+Asimina;triloba;Asiminier;false
+Prunus;curdica;Prunier;true
+Sorbus;domestica;Cormier;true
+Crataegus;viridis;Aubépine;true
+Castanea;dentata;Châtaignier;true
+Crataegus;venustula;Aubépine;true
+Ficus;sp.;Figuier;true
+Lonicera;sp.;Chèvrefeuille;true
+Cornus;kousa var. chinensis;Cornouiller;true
+Castanea;mollissima;Châtaignier;true
+Crataegus;x lettermanii;Aubépine;true
+Cornus;macrophylla;Cornouiller;true
+Crataegus;aprica;Aubépine;true
+Hippophae;rhamnoides;Argousier;true
+Crataegus;spathulata;Aubépine;true
+Crataegus;monogyna var. monogyna;Aubépine;true
+Pyrus;ussuriensis;Poirier;true
+Crataegus;pinnatifida;Aubépine;true
+Crataegus;calpodendron;Aubépine;true
+Lonicera;maackii;Chèvrefeuille;false
+Prunus;domestica subsp. insititia;Prunier;true
+Crataegus;ambigua;Aubépine;true
+Cornus;;Cornouiller;true
+Crataegus;x sorbifolia;Aubépine;true
+Crataegus;rotundifolia var. aboriginum;Aubépine;true
+Crataegus;champlainensis;Aubépine;true
+Crataegus;crus-galli;Aubépine;true
+Crataegus;canbyi;Aubépine;true
+Syringa;sp.;Lilas;false
+Syringa;x chinensis;Lilas;false
+x Sorbopyrus;auricularis;Poirier;true
+Crataegus;chrysocarpa var. phoenicea;Aubépine;true
+Crataegus;crus-galli;Aubépine;true
+Aronia;x prunifolia;Aronie
+Cornus;hongkongensis;Cornouiller;true
+Pyrus;pyrifolia;Poirier;false
+Chaenomeles;cathayensis;Cognassier;true
+Pseudocydonia;sinensis;Cognassier;true
+Chaenomeles;cathayensis;Cognassier;true
+Crataegus;crus-galli;Aubépine;true
