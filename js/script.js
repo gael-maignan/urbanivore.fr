@@ -177,6 +177,32 @@ fetch(root)
       filterEsp.appendChild(label);
     });
 
+
+    // Ajouter la case "Sélectionner toutes les espèces"
+const selectAllCheckbox = document.getElementById("select-all");
+selectAllCheckbox.addEventListener("change", function () {
+  const allEspChecks = document.querySelectorAll("#espece-filters input[type='checkbox']");
+  allEspChecks.forEach(cb => cb.checked = this.checked);
+  updateMap();
+});
+
+// Synchroniser la case "Sélectionner toutes les espèces" quand on (dé)coche individuellement
+function syncSelectAll() {
+  const allEspChecks = document.querySelectorAll("#espece-filters input[type='checkbox']");
+  const allChecked = Array.from(allEspChecks).every(cb => cb.checked);
+  selectAllCheckbox.checked = allChecked;
+}
+
+document.querySelectorAll("#espece-filters input").forEach(input => {
+  input.addEventListener("change", () => {
+    syncSelectAll();
+    updateMap();
+  });
+});
+
+
+
+
     // Ajouter les listeners uniquement pour les espèces
     document.querySelectorAll("#espece-filters input")
       .forEach(input => {
