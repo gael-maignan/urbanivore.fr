@@ -1,100 +1,31 @@
 
 <script type="module">
-const image1 = 'https://urbanivore.fr/collaborate/image_1.jpeg';
-const image2 = 'https://urbanivore.fr/collaborate/image_2.jpeg';
-
-const identify = () => {
-  const form = new FormData()
-
-  form.append('organs', 'flower');
-  form.append('images', fs.createReadStream(image1));
-
-  form.append('organs', 'leaf');
-  form.append('images', fs.createReadStream(image2));
-
-  const project = 'all'; // You can choose a more specific flora, see: /docs/newfloras
-
-  try {
-    const response = await fetch(`https://my-api.plantnet.org/v2/identify/${project}?api-key=2b10Is89LUbOJaKfi7OCou6jsO`,
-      {
-        method: 'post',
-        body: form,
-      }
-    );
-
-    console.log('status', response.status) // should be: 200
-
-    const json = await response.json()
-    console.log('json', json)
-  } catch (error) {
-    console.error('error', error);
-  }
-};
-
-identify()
-
-/*
-// Ces imports ne fonctionnent que côté Node.js, pas dans le navigateur.
-// import fs from 'node:fs'
-// import FormData from 'form-data'
-*/
-
-const image1 = 'https://urbanivore.fr/collaborate/image_1.jpeg';
-const image2 = 'https://urbanivore.fr/collaborate/image_2.jpeg';
+async function urlToFile(url, filename) {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new File([blob], filename, { type: blob.type });
+}
 
 async function identify() {
+  const image1 = await urlToFile('https://urbanivore.fr/collaborate/image_1.jpeg', 'img1.jpeg');
+  const image2 = await urlToFile('https://urbanivore.fr/collaborate/image_2.jpeg', 'img2.jpeg');
+
   const form = new FormData();
-
-  // ⚠️ Dans un navigateur, tu ne peux pas faire fs.createReadStream().
-  // Il faut plutôt utiliser un <input type="file"> ou récupérer les fichiers d'une autre manière.
-  // Exemple fictif ci-dessous :
-  // form.append('images', document.querySelector('#file1').files[0]);
-  // form.append('images', document.querySelector('#file2').files[0]);
-
   form.append('organs', 'flower');
-  form.append('images', image1); // place un vrai fichier Blob ici
-
+  form.append('images', image1);
   form.append('organs', 'leaf');
   form.append('images', image2);
 
-  const project = 'all'; // ou un autre projet spécifique
+  const response = await fetch(
+    `https://my-api.plantnet.org/v2/identify/all?api-key=2b10Is89LUbOJaKfi7OCou6jsO`,
+    {
+      method: 'POST',
+      body: form,
+    }
+  );
 
-  try {
-    const response = await fetch(
-      `https://my-api.plantnet.org/v2/identify/${project}?api-key=2b10Is89LUbOJaKfi7OCou6jsO`,
-      {
-        method: 'POST',
-        body: form,
-      }
-    );
-
-    console.log('status', response.status); // devrait être: 200
-
-    const json = await response.json();
-    console.log('json', json);
-  } catch (error) {
-    console.error('error', error);
-  }
+  console.log(await response.json());
 }
-
 identify();
 
-/*
-arbre = {
-  genre: "genre",
-  espece: "espèce",
-  nom_commun: "",
-  lat: "",
-  lon: "",
-  correction_requise: false,
-  contributeur: ""
-};
-
-dico = [
-  { genre: "genre1", espece: "espece1", nom_commun: "nom commun associé" },
-  { genre: "genre2", espece: "espece2", nom_commun: "nom commun associé" }
-];
-
-console.log(arbre, dico);
-*/
 </script>
