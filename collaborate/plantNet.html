@@ -24,7 +24,9 @@ async function identify() {
     }
   );
 
-  console.log(await response.json());
+  result = await response.json();
+  console.log(result.bestMatch);
+
 }
 identify();
 
