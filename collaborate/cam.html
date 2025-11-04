@@ -109,7 +109,7 @@
   }
 
   @media (max-width: 420px) {
-    button, a.identify-link { font-size: 15px; padding: 10px 14px; }
+    button, button.identify-link { font-size: 15px; padding: 10px 14px; }
     .modal-content { padding: 12px; }
   }
 </style>
@@ -130,7 +130,7 @@
     <div class="controls">
       <button id="takePhotoBtn" class="primary">Prendre</button>
       <button id="retakeBtn" class="secondary" style="display:none;">↺ Reprendre</button>
-      <a id="identifyLink" href="#" style="display:none;">Identifier</a>
+      <button id="identifyLink" href="#" class="primary" style="display:none;">Identifier</button>
       <button id="closeBtn" class="danger">Fermer</button>
     </div>
     <div id="resultat"></div>
@@ -216,8 +216,7 @@ els.takeBtn.addEventListener('click', () => {
   }, 'image/jpeg', 0.9);
 });
 
-// ---- Reprendre une photo ----
-els.retakeBtn.addEventListener('click', () => {
+function reprendre(){
   if (els.photo.src) URL.revokeObjectURL(els.photo.src);
   els.photo.style.display = 'none';
   els.identify.style.display = 'none';
@@ -225,6 +224,11 @@ els.retakeBtn.addEventListener('click', () => {
   els.takeBtn.style.display = 'inline-block';
   els.video.style.display = 'block';
   els.status.textContent = '';
+}
+
+// ---- Reprendre une photo ----
+els.retakeBtn.addEventListener('click', () => {
+  reprendre();
 });
 
 // ---- Fermer la modale proprement ----
@@ -272,9 +276,9 @@ els.identify.addEventListener('click', async () => {
     console.log(result);
 
     if (result.bestMatch) {
-      const best = result.results[0].species;
       els.result.innerHTML = `
-        <p><strong>Nom scientifique :</strong> ${best.scientificNameWithoutAuthor}</p>`;
+        <p><strong>Nom scientifique :</strong> ${result.bestMatch}</p>`;
+        return;
     } else {
       els.result.innerHTML = '<p>Aucun résultat trouvé.</p>';
     }
@@ -284,6 +288,7 @@ els.identify.addEventListener('click', async () => {
     els.result.innerHTML = '<p>Erreur lors de l’identification.</p>';
     els.status.textContent = 'Erreur.';
   }
+  reprendre();
 });
 </script>
 
