@@ -272,7 +272,7 @@ els.identify.addEventListener('click', async () => {
     console.log(result);
 
     if (result.bestMatch) {
-      const best = result.results[0];
+      const best = result.results[0].species;
       els.result.innerHTML = `
         <p><strong>Nom scientifique :</strong> ${best.scientificNameWithoutAuthor}</p>`;
     } else {
