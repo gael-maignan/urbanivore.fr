@@ -39,9 +39,7 @@
 
         if (result.bestMatch) {
           div.innerHTML = `
-            <p><strong>Nom scientifique :</strong> ${result.bestMatch.scientificNameWithoutAuthor}</p>
-            <p><strong>Nom commun :</strong> ${result.bestMatch.commonNames?.join(', ') || 'Non disponible'}</p>
-            <p><strong>Score :</strong> ${(result.bestMatch.score * 100).toFixed(2)}%</p>
+            <p><strong>Nom complet :</strong> ${result.bestMatch}</p>
           `;
         } else {
           div.innerHTML = '<p>Aucun résultat trouvé.</p>';
