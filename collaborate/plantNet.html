@@ -7,12 +7,12 @@ async function urlToFile(url, filename) {
 }
 
 async function identify() {
-  const image1 = await urlToFile('https://urbanivore.fr/collaborate/image_1.jpeg', 'img1.jpeg');
+  //const image1 = await urlToFile('https://urbanivore.fr/collaborate/image_1.jpeg', 'img1.jpeg');
   const image2 = await urlToFile('https://urbanivore.fr/collaborate/image_2.jpeg', 'img2.jpeg');
 
   const form = new FormData();
-  form.append('organs', 'flower');
-  form.append('images', image1);
+  //form.append('organs', 'flower');
+  //form.append('images', image1);
   form.append('organs', 'leaf');
   form.append('images', image2);
 
