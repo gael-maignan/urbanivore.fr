@@ -272,8 +272,9 @@ els.identify.addEventListener('click', async () => {
     console.log(result);
 
     if (result.bestMatch) {
+      const best = result.results[0];
       els.result.innerHTML = `
-        <p><strong>Nom scientifique :</strong> ${result.bestMatch}</p>`;
+        <p><strong>Nom scientifique :</strong> ${best.scientificNameWithoutAuthor}</p>`;
     } else {
       els.result.innerHTML = '<p>Aucun résultat trouvé.</p>';
     }
