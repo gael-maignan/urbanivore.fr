@@ -133,18 +133,13 @@
       <button id="identifyLink" href="#" class="primary" style="display:none;">Identifier</button>
       <button id="closeBtn" class="danger">Fermer</button>
     </div>
+    <div class="controls" id="submit" style="display:none">
+      <button id="add" class="primary">Ajouter à la carte</button>
+    </div>
     <div id="resultat"></div>
     <p id="status" class="tc"></p>
   </div>
 </div>
-
-
-<script>
-function maFonction() {
-  alert("Lien cliqué !");
-}
-</script>
-
 
 
 <script type="module">
@@ -156,6 +151,7 @@ const els = {
   photo: document.getElementById('photoPreview'),
   takeBtn: document.getElementById('takePhotoBtn'),
   retakeBtn: document.getElementById('retakeBtn'),
+  submitBtn: document.getElementById('add'),
   identify: document.getElementById('identifyLink'),
   closeBtn: document.getElementById('closeBtn'),
   status: document.getElementById('status'),
@@ -224,12 +220,18 @@ function reprendre(){
   els.takeBtn.style.display = 'inline-block';
   els.video.style.display = 'block';
   els.status.textContent = '';
+  document.getElementById('submit').style.display = 'block';
 }
 
 // ---- Reprendre une photo ----
 els.retakeBtn.addEventListener('click', () => {
   reprendre();
   els.result.innerHTML = '<p></p>';
+});
+
+// ---- Envoyer la soumission ----
+els.submitBtn.addEventListener('click', () => {
+  els.result.innerHTML = '<p>Envoi !</p>';
 });
 
 // ---- Fermer la modale proprement ----
@@ -280,6 +282,9 @@ els.identify.addEventListener('click', async () => {
       els.result.innerHTML = `
         <p><strong>Nom scientifique :</strong> ${result.bestMatch}</p>`;
         els.status.textContent = 'Identification terminée.';
+
+        document.getElementById('submit').style.display = 'block'; // l’élément devient visible
+
         return;
     } else {
       els.result.innerHTML = '<p>Aucun résultat trouvé.</p>';
@@ -293,101 +298,5 @@ els.identify.addEventListener('click', async () => {
 });
 </script>
 
-<!--
-<script>
-const els = {
-  openBtn: document.getElementById('openCameraBtn'),
-  modal: document.getElementById('cameraModal'),
-  video: document.getElementById('video'),
-  canvas: document.getElementById('canvas'),
-  photo: document.getElementById('photoPreview'),
-  takeBtn: document.getElementById('takePhotoBtn'),
-  retakeBtn: document.getElementById('retakeBtn'),
-  identify: document.getElementById('identifyLink'),
-  closeBtn: document.getElementById('closeBtn'),
-  status: document.getElementById('status'),
-  flash: document.getElementById('flashEffect')
-};
-let stream = null;
-
-// Ouvrir la caméra
-els.openBtn.addEventListener('click', async () => {
-  els.modal.setAttribute('aria-hidden', 'false');
-  els.status.textContent = 'Initialisation de la caméra...';
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: { ideal: "environment" },
-        width: { ideal: 4096 },
-        height: { ideal: 2160 }
-      },
-      audio: false
-    });
-    els.video.srcObject = stream;
-    await els.video.play();
-    els.status.textContent = '';
-    els.takeBtn.focus();
-  } catch (err) {
-    els.status.textContent = "Impossible d'accéder à la caméra : " + err.message;
-  }
-});
-
-// Capture photo
-els.takeBtn.addEventListener('click', () => {
-  if (!stream) return;
-  els.flash.classList.add('active');
-  setTimeout(() => els.flash.classList.remove('active'), 150);
-
-  const { videoWidth: w, videoHeight: h } = els.video;
-  if (!w || !h) return;
-
-  els.canvas.width = w;
-  els.canvas.height = h;
-  const ctx = els.canvas.getContext('2d');
-  ctx.drawImage(els.video, 0, 0, w, h);
-
-  els.canvas.toBlob(blob => {
-    if (!blob) return;
-    const url = URL.createObjectURL(blob);
-    els.photo.src = url;
-    els.photo.style.display = 'block';
-    els.video.style.display = 'none';
-    els.identify.href = url;
-    els.identify.style.display = 'inline-block';
-    els.retakeBtn.style.display = 'inline-block';
-    els.takeBtn.style.display = 'none';
-    els.status.textContent = 'Photo capturée.';
-  }, 'image/jpeg', 0.9); // JPEG plus léger
-});
-
-// Reprendre
-els.retakeBtn.addEventListener('click', () => {
-  if (els.photo.src) URL.revokeObjectURL(els.photo.src);
-  els.photo.style.display = 'none';
-  els.identify.style.display = 'none';
-  els.retakeBtn.style.display = 'none';
-  els.takeBtn.style.display = 'inline-block';
-  els.video.style.display = 'block';
-  els.status.textContent = '';
-});
-
-// Fermer proprement
-function closeModal() {
-  els.modal.setAttribute('aria-hidden', 'true');
-  els.status.textContent = '';
-  [els.photo, els.identify, els.retakeBtn].forEach(e => e.style.display = 'none');
-  els.video.style.display = 'block';
-  els.takeBtn.style.display = 'inline-block';
-  if (stream) {
-    stream.getTracks().forEach(t => t.stop());
-    stream = null;
-  }
-  els.video.srcObject = null;
-}
-els.closeBtn.addEventListener('click', closeModal);
-els.modal.addEventListener('click', e => { if (e.target === els.modal) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && els.modal.getAttribute('aria-hidden') === 'false') closeModal(); });
-window.addEventListener('beforeunload', () => { if (stream) stream.getTracks().forEach(t => t.stop()); });
-</script>-->
 </body>
 </html>
