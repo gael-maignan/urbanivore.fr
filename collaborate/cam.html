@@ -280,14 +280,14 @@ els.submitBtn.addEventListener('click', () => {
             console.log("Localisation autorisée ✅");
             //console.log("Latitude:", position.coords.latitude, "Longitude:", position.coords.longitude);
 
-                const data = {
+                const arbre = {
     lat: position.coords.latitude,
     lon: position.coords.longitude,
     nom: result.bestMatch
   };
   openPageLoader("Envoi en cours...");
   els.result.innerHTML = '<p>Envoi !</p>';
-  await addRow(spreadsheetId, "arbres", data);
+  await addRow(spreadsheetId, "arbres", arbre);
   els.result.innerHTML = '<p>Envoi terminé !</p>';
   closePageLoader();
           },
