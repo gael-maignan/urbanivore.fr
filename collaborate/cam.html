@@ -64,7 +64,6 @@
     background-image: url('urbanivore.webp');
       background-size: cover;        /* L'image couvre tout l'écran */
       background-position: center;
-      background-attachment: fixed; 
   }
 
   button, button.identify-link {
@@ -354,6 +353,8 @@ async function write() {
       closePageLoader();
 
     }catch (error) {
+      closePageLoader();
+      alert("Erreur lors de l'envoi, actualisez la page puis réalisez une nouvelle soumission");
       els.result.innerHTML = '<p>Erreur lors de l\'envoi</p>';
     } 
 
