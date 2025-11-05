@@ -148,6 +148,13 @@ async function initCarte() {
 
 
   console.log("Position actuelle utilisée :", init_pos);
+
+// Rendre les éléments utlisables dans tout le code
+    window.map = map;
+window.plainMarkersGroup = plainMarkersGroup;
+window.clusterGroup = clusterGroup;
+window.markers = markers;
+window.updateMarkersByZoom = updateMarkersByZoom;
 }
 
 // Lancer l'initialisation au chargement de la page
@@ -474,6 +481,26 @@ async function write() {
       await addRow(spreadsheetId, "arbres", arbre);
       reprendre();
       els.result.innerHTML = '<p>Arbre ajouté avec succès, merci !<br>Vous pouvez ajouter un autre arbre ou <a href="https://urbanivore.fr/collaborate/map.html">ouvrir la carte</a></p>';
+
+
+      // === Ajouter immédiatement le nouvel arbre à la carte ===
+if (window.map && window.markers) {
+  const m = L.marker([arbre.lat, arbre.lon]);
+  m.bindPopup(`${arbre.nom} (${getDate(arbre.date)})`);
+  window.markers.push(m);
+  
+  // Ajouter au bon groupe selon le niveau de zoom actuel
+  if (window.map.getZoom() < 13) {
+    window.clusterGroup.addLayer(m);
+  } else {
+    window.plainMarkersGroup.addLayer(m);
+  }
+  
+  // Optionnel : centrer la carte sur le nouvel arbre
+  window.map.setView([arbre.lat, arbre.lon], 16);
+}
+
+      
       closePageLoader();
 
     }catch (error) {
