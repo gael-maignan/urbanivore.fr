@@ -133,6 +133,9 @@
 
   img.preview {
     max-height: 40vh;
+      object-fit: cover;       /* ✅ garde les proportions et "zoom" */
+  object-position: center; /* centre l’image dans le cadre */
+  display: block;          /* évite les petits espaces indésirables */
   }
 
   .flash {
@@ -347,11 +350,20 @@ async function write() {
     const position = await getCurrentPositionAsync();
     console.log("Localisation autorisée ✅");
 
+
+    // Récupère la date du jour
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // les mois commencent à 0
+    const year = now.getFullYear();
+    const dateFormattee = `${day}/${month}/${year}`;
+
     const arbre = {
       lat: position.coords.latitude,
       lon: position.coords.longitude,
       nom: result.bestMatch, // Assure-toi que "result" est défini ailleurs
-      data: result
+      data: result,
+      date: dateFormattee;
     };
 
     try {
