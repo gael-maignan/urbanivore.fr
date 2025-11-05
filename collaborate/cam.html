@@ -6,45 +6,165 @@
 <title>Contribuer à Urbanivore</title>
 
 <script src="https://gael-mgn.github.io/js/read-and-edit-row.js"></script>
-<!--<script src="get-data.js"></script>-->
+<script src="get.js"></script>
 <script src="loader.js"></script>
 <script type="module" src="https://gael-mgn.github.io/js/log.js"></script>
 
-<link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<!-- Leaflet JS ✅ doit être chargé avant MarkerCluster -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- MarkerCluster CSS -->
+<link rel="stylesheet"
+  href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+<link rel="stylesheet"
+  href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+
+<!-- MarkerCluster JS ✅ après Leaflet -->
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 <script>
-  const spreadsheetId = "1f8gWp618MQUP8iJNURgBJwHYL6u1QKhQPNG0Yajkv1g";
 
-   // Fonction pour demander l'accès à la géolocalisation
-    function demanderLocalisation() {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            console.log("Localisation autorisée ✅");
-            //console.log("Latitude:", position.coords.latitude, "Longitude:", position.coords.longitude);
-          },
-          (error) => {
-            console.error("Accès à la localisation refusé ❌", error);
-          }
-        );
-      } else {
-        console.error("La géolocalisation n’est pas prise en charge par ce navigateur.");
-      }
+function getDate(dateIso = "") { //renvoie la date du jour si aucune date mentionnée
+   // Récupère la date du jour
+    const now = new Date(dateIso);
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // les mois commencent à 0
+    const year = now.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+
+
+const spreadsheetId = "1f8gWp618MQUP8iJNURgBJwHYL6u1QKhQPNG0Yajkv1g";
+let init_pos = {lat: 48.8566, lon: 2.3522};
+let map; // variable globale pour pouvoir la recadrer après localisation
+
+// Fonction pour demander la localisation, retourne une Promise
+function demanderLocalisation() {
+  return new Promise((resolve) => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          init_pos.lat = position.coords.latitude;
+          init_pos.lon = position.coords.longitude;
+          console.log("Localisation autorisée ✅");
+          resolve(init_pos);
+        },
+        (error) => {
+          console.error("Accès à la localisation refusé ❌", error);
+          resolve(null); // continue même si refusé
+        }
+      );
+    } else {
+      console.error("La géolocalisation n’est pas prise en charge par ce navigateur.");
+      resolve(null);
+    }
+  });
+}
+
+// Fonction principale pour initialiser la carte
+async function initCarte() {
+  document.getElementById("mapLoader").style.display = "flex";
+  // Démarrer la récupération des données immédiatement
+  const dataPromise = getData(spreadsheetId, "arbres");
+
+  // Créer la carte (position initiale)
+  map = L.map('map').setView([init_pos.lat, init_pos.lon], 14);
+
+  // Fond de carte
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(map);
+
+  // Groupes pour basculer entre clustering et marqueurs simples
+  const plainMarkersGroup = L.layerGroup().addTo(map); // groupe de marqueurs "plats"
+  const clusterGroup = L.markerClusterGroup(); // groupe cluster (ne pas l'ajouter maintenant obligatoirement)
+
+  // Tableau pour conserver les instances de marqueurs et leurs popups
+  const markers = [];
+
+  // Fonction qui met à jour les groupes selon le niveau de zoom
+  function updateMarkersByZoom() {
+    const z = map.getZoom();
+    // Vider les deux groupes
+    plainMarkersGroup.clearLayers();
+    clusterGroup.clearLayers();
+
+    if (z < 13) {
+      // zoom strictement > 13 => activer clustering
+      markers.forEach(m => clusterGroup.addLayer(m));
+      if (!map.hasLayer(clusterGroup)) map.addLayer(clusterGroup);
+      if (map.hasLayer(plainMarkersGroup)) map.removeLayer(plainMarkersGroup);
+    } else {
+      // sinon, affichage plat
+      markers.forEach(m => plainMarkersGroup.addLayer(m));
+      if (!map.hasLayer(plainMarkersGroup)) map.addLayer(plainMarkersGroup);
+      if (map.hasLayer(clusterGroup)) map.removeLayer(clusterGroup);
+    }
+  }
+
+  // Réagir aux changements de zoom
+  map.on('zoomend', updateMarkersByZoom);
+
+  // Lancer la localisation en parallèle
+  const localisationPromise = demanderLocalisation();
+
+  try {
+    // Attendre les données pour ajouter les marqueurs (crée les marqueurs mais n'ajoute pas directement au map)
+    const arbres = await dataPromise;
+    console.log("Données récupérées :", arbres);
+
+    for (const arbre of arbres) {
+      const m = L.marker([arbre.lat, arbre.lon]);
+      m.bindPopup(`${arbre.nom} (${getDate(arbre.date)})`);
+      markers.push(m);
     }
 
-    // Au chargement de la page, on demande les autorisations
-    window.addEventListener('load', () => {
-      demanderLocalisation();
-    });
+    // Ajouter un marqueur d'exemple (idem)
+    const exemple = L.marker([48.3, 2.3522]);
+    exemple.bindPopup('Bienvenue à Paris');
+    markers.push(exemple);
+
+    // Appliquer la logique d'affichage initiale (selon le zoom courant)
+    updateMarkersByZoom();
+
+    document.getElementById("mapLoader").style.display = "none";
+
+
+  } catch (err) {
+    console.error("Erreur lors de la récupération des données :", err);
+  }
+
+  // Quand la localisation arrive, recentrer la carte
+  const pos = await localisationPromise;
+  if (pos) {
+    map.setView([pos.lat, pos.lon], 14);
+    console.log("Carte recentrée sur la position réelle :", pos);
+    // mettre à jour l'affichage au cas où le zoom aurait été modifié
+    updateMarkersByZoom();
+  }
+
+
+
+  console.log("Position actuelle utilisée :", init_pos);
+}
+
+// Lancer l'initialisation au chargement de la page
+window.addEventListener('load', () => {
+  initCarte();
+});
 </script>
+
 
 <style>
   :root {
     --bg: #f8f9fa;
-    --primary: #00BF16;
+    --primary: #009F16;
     --primary-hover: #0056b3;
     --danger: #dc3545;
     --success: #28a745;
@@ -197,25 +317,17 @@ N’oubliez pas d’autoriser l’accès à votre caméra et à votre géolocali
 </div>
 </div>
 
-<div id="map"></div>
+<div id="map">
+<div id="mapLoader">
+  <div class="spinner"></div>
+  <p>Chargement...</p>
+</div>
+</div>
 
-  <!-- Script Leaflet (SANS integrity) -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <script>
-    const map = L.map('map').setView([48.8566, 2.3522], 13);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    }).addTo(map);
 
-    L.marker([48.8566, 2.3522])
-      .addTo(map)
-      .bindPopup('Bienvenue à Paris')
-      .openPopup();
-  </script>
+
 
 <div class="modal" id="cameraModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-content">
@@ -351,19 +463,14 @@ async function write() {
     console.log("Localisation autorisée ✅");
 
 
-    // Récupère la date du jour
-    const now = new Date();
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // les mois commencent à 0
-    const year = now.getFullYear();
-    const dateFormattee = `${day}/${month}/${year}`;
+   
 
     const arbre = {
       lat: position.coords.latitude,
       lon: position.coords.longitude,
       nom: result.bestMatch, // Assure-toi que "result" est défini ailleurs
       data: result,
-      date: dateFormattee
+      date: getDate()
     };
 
     try {
@@ -466,6 +573,45 @@ els.identify.addEventListener('click', async () => {
   reprendre();
 });
 </script>
+
+
+
+
+<style>
+#mapLoader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;  /* même hauteur que ta carte */
+  background: rgba(255,255,255,1);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  z-index: 500;
+  pointer-events: none; /* permet de scroll ou cliquer sur le fond si nécessaire */
+}
+
+#mapLoader .spinner {
+  width: 55px;
+  height: 55px;
+  border: 6px solid #ccc;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+</style>
+
+
+
 
 </body>
 </html>
