@@ -3,7 +3,39 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Prendre une photo</title>
+<title>Contribuer à Urbanivore</title>
+
+<script src="https://gael-mgn.github.io/js/read-and-edit-row.js"></script>
+<!--<script src="get-data.js"></script>-->
+<script src="loader.js"></script>
+<script type="module" src="https://gael-mgn.github.io/js/log.js"></script>
+
+<script>
+  const spreadsheetId = "1f8gWp618MQUP8iJNURgBJwHYL6u1QKhQPNG0Yajkv1g";
+
+   // Fonction pour demander l'accès à la géolocalisation
+    function demanderLocalisation() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            console.log("Localisation autorisée ✅");
+            //console.log("Latitude:", position.coords.latitude, "Longitude:", position.coords.longitude);
+          },
+          (error) => {
+            console.error("Accès à la localisation refusé ❌", error);
+          }
+        );
+      } else {
+        console.error("La géolocalisation n’est pas prise en charge par ce navigateur.");
+      }
+    }
+
+    // Au chargement de la page, on demande les autorisations
+    window.addEventListener('load', () => {
+      demanderLocalisation();
+    });
+</script>
+
 <style>
   :root {
     --bg: #f8f9fa;
@@ -116,12 +148,15 @@
 </head>
 <body>
 
-<h2>Prendre une photo avec la caméra</h2>
+<h2>Ajouter un arbre à Urbanivore</h2>
+<p>Ajouter un arbre sur la carte d’Urbanivore, c’est un jeu d’enfant ! Prenez une photo de l’arbre, identifiez-le, puis soumettez-le.<br>
+N’oubliez pas d’autoriser l’accès à votre caméra et à votre géolocalisation.</p>
 <button id="openCameraBtn" class="primary">Ouvrir la caméra</button>
+<button id="openMapBtn" class="primary">Ouvrir la carte</button>
 
 <div class="modal" id="cameraModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-content">
-    <h3 id="modalTitle" class="tc">Caméra</h3>
+    <h3 id="modalTitle" class="tc">Prenez en photo le feuillage de l'arbre</h3>
     <div class="flash" id="flashEffect"></div>
     <video id="video" autoplay playsinline></video>
     <img id="photoPreview" class="preview" alt="Aperçu" style="display:none;">
@@ -143,6 +178,9 @@
 
 
 <script type="module">
+
+let result = null;
+
 const els = {
   openBtn: document.getElementById('openCameraBtn'),
   modal: document.getElementById('cameraModal'),
@@ -186,6 +224,9 @@ els.openBtn.addEventListener('click', async () => {
 
 // ---- Capture de la photo ----
 els.takeBtn.addEventListener('click', () => {
+
+  els.result.innerHTML = '<p></p>';
+
   if (!stream) return;
   els.flash.classList.add('active');
   setTimeout(() => els.flash.classList.remove('active'), 150);
@@ -232,6 +273,34 @@ els.retakeBtn.addEventListener('click', () => {
 // ---- Envoyer la soumission ----
 els.submitBtn.addEventListener('click', () => {
   els.result.innerHTML = '<p>Envoi !</p>';
+
+
+    async function write() {
+
+      navigator.geolocation.getCurrentPosition(
+          (position) => {
+            console.log("Localisation autorisée ✅");
+            //console.log("Latitude:", position.coords.latitude, "Longitude:", position.coords.longitude);
+          },
+          (error) => {
+            console.error("Accès à la localisation refusé ❌", error);
+          }
+        );
+
+
+    const data = {
+    lat: position.coords.latitude,
+    lon: position.coords.lontitude,
+    nom: result.bestMatch
+  };
+  console.log("Envoi");
+  await addRow(spreadsheetId, "arbres", data);
+  console.log("Envoi terminé");
+  }
+
+  write();
+
+
 });
 
 // ---- Fermer la modale proprement ----
@@ -275,7 +344,7 @@ els.identify.addEventListener('click', async () => {
         body: form
       }
     );
-    const result = await response.json();
+    result = await response.json();
     console.log(result);
 
     if (result.bestMatch) {
