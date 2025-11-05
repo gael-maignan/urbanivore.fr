@@ -290,14 +290,14 @@ async function write() {
       nom: result.bestMatch // Assure-toi que "result" est défini ailleurs
     };
 
-    openPageLoader("Envoi en cours...");
     els.result.innerHTML = '<p>Envoi !</p>';
 
     try {
-      addRow(spreadsheetId, "arbres", arbre);
+      openPageLoader("Envoi en cours...");
+      await addRow(spreadsheetId, "arbres", arbre);
       els.result.innerHTML = '<p>Envoi terminé !</p>';
       els.submitBtn.style.display = 'none';
-    closePageLoader();
+      closePageLoader();
 
     }catch (error) {
       els.result.innerHTML = '<p>Erreur lors de l\'envoi</p>';
