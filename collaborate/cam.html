@@ -287,7 +287,8 @@ async function write() {
     const arbre = {
       lat: position.coords.latitude,
       lon: position.coords.longitude,
-      nom: result.bestMatch // Assure-toi que "result" est défini ailleurs
+      nom: result.bestMatch, // Assure-toi que "result" est défini ailleurs
+      data: result
     };
 
     els.result.innerHTML = '<p>Envoi !</p>';
@@ -295,8 +296,8 @@ async function write() {
     try {
       openPageLoader("Envoi en cours...");
       await addRow(spreadsheetId, "arbres", arbre);
-      els.result.innerHTML = '<p>Envoi terminé !</p>';
-      document.getElementById('submit').style.display = 'none';
+      reprendre();
+      els.result.innerHTML = '<p>Arbre ajouté avec succès !<br>Ajouter un autre arbre</p>';
       closePageLoader();
 
     }catch (error) {
