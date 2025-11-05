@@ -272,9 +272,7 @@ els.retakeBtn.addEventListener('click', () => {
 
 // ---- Envoyer la soumission ----
 els.submitBtn.addEventListener('click', () => {
-  els.result.innerHTML = '<p>Envoi !</p>';
-
-
+  
     async function write() {
 
       navigator.geolocation.getCurrentPosition(
@@ -293,9 +291,11 @@ els.submitBtn.addEventListener('click', () => {
     lon: position.coords.lontitude,
     nom: result.bestMatch
   };
-  console.log("Envoi");
+  openPageLoader("Envoi en cours...");
+  els.result.innerHTML = '<p>Envoi !</p>';
   await addRow(spreadsheetId, "arbres", data);
-  console.log("Envoi terminé");
+  els.result.innerHTML = '<p>Envoi terminé !</p>';
+  closePageLoader();
   }
 
   write();
