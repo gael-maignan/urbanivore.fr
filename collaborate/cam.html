@@ -297,7 +297,7 @@ async function write() {
       openPageLoader("Envoi en cours...");
       await addRow(spreadsheetId, "arbres", arbre);
       reprendre();
-      els.result.innerHTML = '<p>Arbre ajouté avec succès !<br>Ajouter un autre arbre</p>';
+      els.result.innerHTML = '<p>Arbre ajouté avec succès, merci !<br>Vous pouvez ajouter un autre arbre ou <a href="https://urbanivore.fr/collaborate/map.html">ouvrir la carte</a></p>';
       closePageLoader();
 
     }catch (error) {
