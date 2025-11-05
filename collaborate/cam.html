@@ -168,8 +168,8 @@ N’oubliez pas d’autoriser l’accès à votre caméra et à votre géolocali
       <button id="identifyLink" href="#" class="primary" style="display:none;">Identifier</button>
       <button id="closeBtn" class="danger">Fermer</button>
     </div>
-    <div id="resultat"></div>
     <p id="status" class="tc"></p>
+    <div id="resultat"></div>
     <div class="controls" id="submit" style="display:none">
       <button id="add" class="primary">Ajouter à la carte</button>
     </div>
@@ -373,9 +373,11 @@ els.identify.addEventListener('click', async () => {
         els.status.textContent = 'l\'espèce indiquée est incorrecte ? Prenez à nouveau une photo sous un autre angle';
 
         document.getElementById('submit').style.display = 'block'; // l’élément devient visible
+        els.identify.style.display = 'none';
 
         return;
     } else {
+      els.identify.style.display = 'none';
       els.result.innerHTML = '<p>Aucun résultat trouvé.</p>';
     }
   } catch (err) {
