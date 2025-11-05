@@ -480,7 +480,8 @@ async function write() {
       openPageLoader("Envoi en cours...");
       await addRow(spreadsheetId, "arbres", arbre);
       reprendre();
-      els.result.innerHTML = '<p>Arbre ajouté avec succès, merci !<br>Vous pouvez ajouter un autre arbre ou <a href="https://urbanivore.fr/collaborate/map.html">ouvrir la carte</a></p>';
+      //els.result.innerHTML = '<p>Arbre ajouté avec succès, merci !<br>Vous pouvez ajouter un autre arbre ou <a href="https://urbanivore.fr/collaborate/map.html">ouvrir la carte</a></p>';
+      els.result.innerHTML = '<p>Arbre ajouté avec succès, merci !<br>Vous pourrez retrouver votre arbre dès à présent sur la carte !</a></p>';
 
 
       // === Ajouter immédiatement le nouvel arbre à la carte ===
@@ -500,7 +501,7 @@ if (window.map && window.markers) {
   window.map.setView([arbre.lat, arbre.lon], 16);
 }
 
-      
+
       closePageLoader();
 
     }catch (error) {
