@@ -10,6 +10,11 @@
 <script src="loader.js"></script>
 <script type="module" src="https://gael-mgn.github.io/js/log.js"></script>
 
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
 <script>
   const spreadsheetId = "1f8gWp618MQUP8iJNURgBJwHYL6u1QKhQPNG0Yajkv1g";
 
@@ -39,7 +44,7 @@
 <style>
   :root {
     --bg: #f8f9fa;
-    --primary: #007bff;
+    --primary: #00BF16;
     --primary-hover: #0056b3;
     --danger: #dc3545;
     --success: #28a745;
@@ -48,16 +53,22 @@
   }
 
   body {
+    max-width: 1100px;
     font-family: system-ui, sans-serif;
     text-align: center;
     padding: 30px;
     background: var(--bg);
     margin: 0;
+    margin:auto;
+
+    background-image: url('urbanivore.webp');
+      background-size: cover;        /* L'image couvre tout l'écran */
+      background-position: center;
+      background-attachment: fixed; 
   }
 
   button, button.identify-link {
     padding: 12px 20px;
-    border: none;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
@@ -68,9 +79,9 @@
   }
 
   button:hover { opacity: 0.9; }
-  button.primary { background: var(--primary); }
-  button.secondary { background: #6c757d; }
-  button.danger { background: var(--danger); }
+  button.primary { background: var(--primary);border: solid var(--primary) 1px; }
+  button.secondary { background: transparent; color:var(--primary); border: solid var(--primary) 1px; }
+  button.danger { background: var(--danger); border: solid var(--danger) 1px;}
   button.identify-link { background: var(--success); }
 
   #resultat {
@@ -156,7 +167,14 @@
   <style>
     .box {
       padding: 1rem;
-      background: transparent;
+      background: white;
+      border-radius: 12px;
+    }
+
+    #map {
+      margin-top: 1rem;
+      height: 55vh;
+      width: 100%;
       border-radius: 12px;
     }
   </style>
@@ -167,8 +185,29 @@
 N’oubliez pas d’autoriser l’accès à votre caméra et à votre géolocalisation.</p>
 <div class="controls">
 <button id="openCameraBtn" class="primary">Ouvrir la caméra</button>
-<button id="openMapBtn" class="primary">Ouvrir la carte</button>
+<button id="openMapBtn" class="secondary">Ouvrir la carte</button>
 </div>
+</div>
+
+<div id="map"></div>
+
+  <!-- Script Leaflet (SANS integrity) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    const map = L.map('map').setView([48.8566, 2.3522], 13);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    }).addTo(map);
+
+    L.marker([48.8566, 2.3522])
+      .addTo(map)
+      .bindPopup('Bienvenue à Paris')
+      .openPopup();
+  </script>
 
 <div class="modal" id="cameraModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-content">
