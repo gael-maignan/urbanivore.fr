@@ -349,8 +349,8 @@ els.identify.addEventListener('click', async () => {
       return new File([blob], filename, { type: blob.type });
   }
 
-  //const file = await urlToFile('https://urbanivore.fr/collaborate/image_2.jpeg', 'img2.jpeg');
-  const file = new File([capturedBlob], 'photo.jpg', { type: 'image/jpeg' });
+  const file = await urlToFile('https://urbanivore.fr/collaborate/image_2.jpeg', 'img2.jpeg');
+  //const file = new File([capturedBlob], 'photo.jpg', { type: 'image/jpeg' });
   const form = new FormData();
   form.append('organs', 'leaf'); // ou 'flower', 'fruit' selon le cas
   form.append('images', file);
@@ -370,7 +370,7 @@ els.identify.addEventListener('click', async () => {
       els.result.innerHTML = `
         <p>${result.bestMatch}</p>`;
         els.status.textContent = '';
-        //els.status.textContent = 'Identification terminée.';
+        els.status.textContent = 'l\'espèce indiquée est incorrecte ? Prenez à nouveau une photo sous un autre angle';
 
         document.getElementById('submit').style.display = 'block'; // l’élément devient visible
 
