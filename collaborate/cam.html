@@ -296,7 +296,7 @@ async function write() {
     try {
       addRow(spreadsheetId, "arbres", arbre);
       els.result.innerHTML = '<p>Envoi terminé !</p>';
-      els.takeBtn.style.display = 'none';
+      els.submitBtn.style.display = 'none';
     closePageLoader();
 
     }catch (error) {
