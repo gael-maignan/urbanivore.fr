@@ -280,21 +280,24 @@ els.submitBtn.addEventListener('click', () => {
             console.log("Localisation autorisée ✅");
             //console.log("Latitude:", position.coords.latitude, "Longitude:", position.coords.longitude);
 
-            const data = {
-              lat: position.coords.latitude,
-              lon: position.coords.lontitude,
-              nom: result.bestMatch
-            };
-            openPageLoader("Envoi en cours...");
-            els.result.innerHTML = '<p>Envoi !</p>';
-            await addRow(spreadsheetId, "arbres", data);
-            els.result.innerHTML = '<p>Envoi terminé !</p>';
+                const data = {
+    lat: position.coords.latitude,
+    lon: position.coords.lontitude,
+    nom: result.bestMatch
+  };
+  openPageLoader("Envoi en cours...");
+  els.result.innerHTML = '<p>Envoi !</p>';
+  await addRow(spreadsheetId, "arbres", data);
+  els.result.innerHTML = '<p>Envoi terminé !</p>';
+  closePageLoader();
           },
           (error) => {
             console.error("Accès à la localisation refusé ❌", error);
           }
         );
-  closePageLoader();
+
+
+
   }
 
   write();
