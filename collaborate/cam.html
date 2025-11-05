@@ -293,10 +293,17 @@ async function write() {
     openPageLoader("Envoi en cours...");
     els.result.innerHTML = '<p>Envoi !</p>';
 
-    await addRow(spreadsheetId, "arbres", arbre);
-
-    els.result.innerHTML = '<p>Envoi terminé !</p>';
+    try {
+      addRow(spreadsheetId, "arbres", arbre);
+      els.result.innerHTML = '<p>Envoi terminé !</p>';
+      els.takeBtn.style.display = 'none';
     closePageLoader();
+
+    }catch (error) {
+      els.result.innerHTML = '<p>Erreur lors de l\'envoi</p>';
+    } 
+
+    
 
   } catch (error) {
     console.error("Accès à la localisation refusé ❌", error);
