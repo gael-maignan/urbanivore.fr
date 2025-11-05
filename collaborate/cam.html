@@ -262,6 +262,9 @@ let capturedBlob = null; // <= on stocke la photo ici
 
 // ---- Ouvrir la caméra ----
 els.openBtn.addEventListener('click', async () => {
+
+  document.body.style.overflow = 'hidden'; // bloque le scroll pour ne pas scroller sur la page d'en dessous pendant que le popup est ouvert
+
   els.modal.setAttribute('aria-hidden', 'false');
   els.status.textContent = 'Initialisation de la caméra...';
   try {
@@ -379,6 +382,7 @@ write();
 
 // ---- Fermer la modale proprement ----
 function closeModal() {
+  document.body.style.overflow = 'auto'; // réactive le srcoll
   els.modal.setAttribute('aria-hidden', 'true');
   els.status.textContent = '';
   [els.photo, els.identify, els.retakeBtn].forEach(e => e.style.display = 'none');
