@@ -125,11 +125,6 @@ async function initCarte() {
       markers.push(m);
     }
 
-    // Ajouter un marqueur d'exemple (idem)
-    const exemple = L.marker([48.3, 2.3522]);
-    exemple.bindPopup('Bienvenue à Paris');
-    markers.push(exemple);
-
     // Appliquer la logique d'affichage initiale (selon le zoom courant)
     updateMarkersByZoom();
 
