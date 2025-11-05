@@ -67,7 +67,7 @@ function demanderLocalisation() {
 
 // Fonction principale pour initialiser la carte
 async function initCarte() {
-  document.getElementById("mapLoader").style.display = "flex";
+  
   // Démarrer la récupération des données immédiatement
   const dataPromise = getData(spreadsheetId, "arbres");
 
@@ -116,6 +116,7 @@ async function initCarte() {
 
   try {
     // Attendre les données pour ajouter les marqueurs (crée les marqueurs mais n'ajoute pas directement au map)
+    document.getElementById("mapLoader").style.display = "flex";
     const arbres = await dataPromise;
     console.log("Données récupérées :", arbres);
 
