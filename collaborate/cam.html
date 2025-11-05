@@ -27,9 +27,9 @@
 
 <script>
 
-function getDate(dateIso = "") { //renvoie la date du jour si aucune date mentionnée
+function getDate(dateIso = null) { //renvoie la date du jour si aucune date mentionnée
    // Récupère la date du jour
-    const now = new Date(dateIso);
+    const now = dateIso ? new Date(dateIso) : new Date();
     const day = String(now.getDate()).padStart(2, '0');
     const month = String(now.getMonth() + 1).padStart(2, '0'); // les mois commencent à 0
     const year = now.getFullYear();
