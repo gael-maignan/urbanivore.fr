@@ -273,34 +273,38 @@ els.retakeBtn.addEventListener('click', () => {
 // ---- Envoyer la soumission ----
 els.submitBtn.addEventListener('click', () => {
   
-    async function write() {
+    async function getCurrentPositionAsync() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+}
 
-      navigator.geolocation.getCurrentPosition(
-          (position) => {
-            console.log("Localisation autorisée ✅");
-            //console.log("Latitude:", position.coords.latitude, "Longitude:", position.coords.longitude);
+async function write() {
+  try {
+    const position = await getCurrentPositionAsync();
+    console.log("Localisation autorisée ✅");
 
-                const arbre = {
-    lat: position.coords.latitude,
-    lon: position.coords.longitude,
-    nom: result.bestMatch
-  };
-  openPageLoader("Envoi en cours...");
-  els.result.innerHTML = '<p>Envoi !</p>';
-  await addRow(spreadsheetId, "arbres", arbre);
-  els.result.innerHTML = '<p>Envoi terminé !</p>';
-  closePageLoader();
-          },
-          (error) => {
-            console.error("Accès à la localisation refusé ❌", error);
-          }
-        );
+    const arbre = {
+      lat: position.coords.latitude,
+      lon: position.coords.longitude,
+      nom: result.bestMatch // Assure-toi que "result" est défini ailleurs
+    };
 
+    openPageLoader("Envoi en cours...");
+    els.result.innerHTML = '<p>Envoi !</p>';
 
+    await addRow(spreadsheetId, "arbres", arbre);
 
+    els.result.innerHTML = '<p>Envoi terminé !</p>';
+    closePageLoader();
+
+  } catch (error) {
+    console.error("Accès à la localisation refusé ❌", error);
   }
+}
 
-  write();
+write();
+
 
 
 });
