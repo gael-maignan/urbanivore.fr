@@ -60,10 +60,12 @@
     background: var(--bg);
     margin: 0;
     margin:auto;
+    height: 100vh;
 
     background-image: url('urbanivore.webp');
       background-size: cover;        /* L'image couvre tout l'écran */
       background-position: center;
+    background-repeat: no-repeat;
   }
 
   button, button.identify-link {
@@ -127,6 +129,10 @@
     width: 100%;
     border-radius: 8px;
     background: #000;
+  }
+
+  img.preview {
+    max-height: 50vh;
   }
 
   .flash {
