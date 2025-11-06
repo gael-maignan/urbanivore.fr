@@ -311,7 +311,7 @@ window.addEventListener('load', () => {
   </style>
 
 <div class="box">
-<h2>Ajouter un arbre à Urbanivore</h2>
+<h1>Ajouter un arbre à Urbanivore</h1>
 <p>Ajouter un arbre sur la carte d’Urbanivore, c’est un jeu d’enfant ! Prenez une photo de l’arbre, identifiez-le, puis soumettez-le.<br>
 N’oubliez pas d’autoriser l’accès à votre caméra et à votre géolocalisation.</p>
 <div class="controls">
@@ -462,6 +462,7 @@ els.submitBtn.addEventListener('click', () => {
 
 async function write() {
   try {
+    openPageLoader("Envoi en cours...");
     const position = await getCurrentPositionAsync();
     console.log("Localisation autorisée ✅");
 
@@ -477,7 +478,6 @@ async function write() {
     };
 
     try {
-      openPageLoader("Envoi en cours...");
       await addRow(spreadsheetId, "arbres", arbre);
       reprendre();
       //els.result.innerHTML = '<p>Arbre ajouté avec succès, merci !<br>Vous pouvez ajouter un autre arbre ou <a href="https://urbanivore.fr/collaborate/map.html">ouvrir la carte</a></p>';
@@ -513,6 +513,7 @@ if (window.map && window.markers) {
     
 
   } catch (error) {
+    closePageLoader();
     console.error("Accès à la localisation refusé ❌", error);
   }
 }
