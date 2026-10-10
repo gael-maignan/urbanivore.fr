@@ -650,53 +650,8 @@ const recettes = {
   ]
 };
 
-const recetteHTMLParEspece = {};
-
-for (const espece in recettes) {
-  const recettesEspece = recettes[espece];
-  recetteHTMLParEspece[espece] = recettesEspece.map(recette => {
-    return `
-      <h3>${recette.titre}</h3>
-      <img src="${recette.image}" alt="${recette.titre}">
-      <a class="recette-link" href="${recette.lien}" target="_blank">🍽️ Voir la recette complète</a>
-    `;
-  });
-}
-
-
-/*
-// Génère une seule fois tous les panneaux HTML de recettes par espèce
-const recetteHTMLParEspece = {};
-
-for (const espece in recettes) {
-  let html = "<hr><strong>Recette associée :</strong><br/>";
-  recettes[espece].forEach(recette => {
-    html += `
-      <div style="margin-top: 5px;" classe="recette-popup">
-        <img src="${recette.image}" alt="${recette.titre}" ><br/>
-        <a class="recette-link" href="${recette.lien}" target="_blank">${recette.titre}</a>
-      </div>
-    `;
-  });
-  recetteHTMLParEspece[espece] = html;
-}
-*/
-
-
-
-const couleurParEspece = {};
-const palette = [
-  "#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231",
-  "#911eb4", "#46f0f0", "#f032e6", "#bcf60c", "#fabebe",
-  "#008080", "#e6beff", "#9a6324", "#fffac8", "#800000"
-];
-
-let colorIndex = 0;
-
-function getCouleurPourEspece(espece) {
-  if (!couleurParEspece[espece]) {
-    couleurParEspece[espece] = palette[colorIndex % palette.length];
-    colorIndex++;
-  }
-  return couleurParEspece[espece];
+// Retire les recettes incomplètes (titre ou lien manquant) et les espèces sans recette
+for (const espece of Object.keys(recettes)) {
+  recettes[espece] = recettes[espece].filter(r => r && r.titre && r.lien);
+  if (recettes[espece].length === 0) delete recettes[espece];
 }

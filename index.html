@@ -1,10 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Urbanivore – Cartographie des arbres comestibles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:ital,wght@1,600&display=swap" rel="stylesheet">
 
   <meta name="robots" content="index, follow">
@@ -15,10 +16,9 @@
   <meta property="og:image" content="https://urbanivore.fr/img/urbanivore.webp">
 
   <link rel="icon" href="img/logo.png" type="image/png">
+  <link rel="preload" as="image" href="img/urbanivore.webp" fetchpriority="high">
 
   <script type="module" src="https://gael-maignan.fr/logs"></script>
-
-  <script src="popup.js"></script>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9272412080589230"
      crossorigin="anonymous"></script>
@@ -35,6 +35,9 @@
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
       scroll-behavior: smooth;
     }
 
@@ -263,43 +266,10 @@ footer::before {
       <p class="subtitle">Cartographie des arbres comestibles de nos villes</p>
       <p class="description" id="description">Paris, Lyon, Bordeaux, Grenoble… Des milliers d'arbres pour des centaines de recettes à portée de main.</p>
 
-      <a  id="scrollButton" href="#" class="btn btn-animated">Découvrir la carte</a>
-      <a  id="scrollButton" href="contribute" class="btn btn-animated">Contribuer à Urbanivore</a>
-<script>
-function smoothScrollTo(element, duration) {
-            const targetPosition = document.getElementById(element).offsetTop;
-            const startPosition = window.scrollY;
-            const distance = targetPosition - startPosition;
-            let startTime = null;
-
-            function animationStep(currentTime) {
-                if (!startTime) startTime = currentTime;
-                const elapsedTime = currentTime - startTime;
-                const progress = Math.min(elapsedTime / duration, 1);
-
-                const easeInOut = progress < 0.5
-                    ? 4 * progress * progress * progress
-                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-                window.scrollTo(0, startPosition + distance * easeInOut);
-
-                if (elapsedTime < duration) {
-                    requestAnimationFrame(animationStep);
-                }
-            }
-
-            requestAnimationFrame(animationStep);
-        }
-document.getElementById("scrollButton").addEventListener("click", () => {
-  smoothScrollTo("map", 800); // Ajuste selon besoin
-});
-</script>
+      <a id="scrollButton" href="#map" class="btn btn-animated">Découvrir la carte</a>
+      <a href="contribute" class="btn btn-animated">Contribuer à Urbanivore</a>
 
 
-      <!--
-      <a href="map?toulouse" class="btn" target="_blank">Toulouse</a>
-      <a href="map?paris" class="btn" target="_blank">Paris</a>
-      <a href="map?bordeaux" class="btn" target="_blank">Bordeaux</a>-->
     </div>
   </header>
 
@@ -331,7 +301,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     <!-- Nouvelle div englobante -->
     <div class="map-wrapper">
       <div class="map-overlay" id="mapOverlay">
-        <img src="img/urbanivore.webp" alt="Carte Urbanivore" class="overlay-bg" />
+        <img src="img/urbanivore.webp" alt="Carte Urbanivore" class="overlay-bg" loading="lazy" decoding="async" />
         <div class="overlay-filter"></div>
         <button class="btn" onclick="loadMap()">Afficher la carte</button>
       </div>
@@ -348,7 +318,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
   width: 100%;
   height: 70vh;
   border-radius: 12px;
-   border: solid var(--accent-dark); 2px;
+  border: 2px solid var(--accent-dark);
   overflow: hidden;
 }
 
@@ -516,7 +486,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
   }
 
   @media (max-width: 600px) {
-     .map-wrapper { {
+    .map-wrapper {
       height: 65vh;
     }
   }
@@ -525,27 +495,8 @@ document.getElementById("scrollButton").addEventListener("click", () => {
 
 
 
-  <!--
-  <section id="cartes" class="maps">
-    <div class="container">
-      <h2>Cartes interactives</h2>
-      <div class="grid">
-        <div class="card">Paris – <a href="map?paris" target="_blank">Voir la carte</a></div>
-        <div class="card">Lyon – <a href="map?lyon" target="_blank">Voir la carte</a></div>
-        <div class="card">Bordeaux – <a href="map?bordeaux" target="_blank">Voir la carte</a></div>
-        <div class="card">Grenoble – <a href="map?grenoble" target="_blank">Voir la carte</a></div>
-      </div>
-    </div>
-  </section>-->
 
 
-  <style>
-    #appel {
-      background-color: #CFE2CE;
-      padding: 1rem;
-      border-radius: 12px;
-    }
-  </style>
 
 
 
@@ -622,7 +573,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
   <footer>
     <div class="container">
       <nav>
-        <a href="#cartes">Cartes</a>
+        <a href="#map">Carte</a>
         <a href="recettes" target="_blank">Recettes</a>
         <a href="#">Mentions légales</a>
         <a href="https://www.openstreetmap.org/">OpenStreetMap</a>
@@ -631,11 +582,7 @@ document.getElementById("scrollButton").addEventListener("click", () => {
     </div>
   </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
-</html>
-
-
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     const ville = params.get("ville");
@@ -680,3 +627,5 @@ document.getElementById("scrollButton").addEventListener("click", () => {
   });
 
 </script>
+</body>
+</html>

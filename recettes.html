@@ -7,6 +7,8 @@
 
   <meta name="robots" content="noindex, nofollow">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
   <script type="module" src="https://gael-maignan.fr/logs"></script>
@@ -197,19 +199,23 @@ h1::after {
   <script src="js/recettes.js"></script>
 
   <script>
-    const totalRecettes = Object.values(recettes).reduce((acc, arr) => acc + arr.length, 0);
-    console.log(totalRecettes);
-
     const grid = document.getElementById('recette-grid');
+    const frag = document.createDocumentFragment();
+    let n = 0;
 
     for (const arbre in recettes) {
       recettes[arbre].forEach(r => {
         const card = document.createElement('div');
         card.className = 'card';
+        // Décalage léger de l'animation, plafonné pour ne pas retarder les cartes du bas
+        card.style.animationDelay = Math.min(n++, 12) * 40 + 'ms';
 
         const image = document.createElement('img');
-        image.src = r.image || 'https://via.placeholder.com/300x200?text=Recette';
+        image.src = r.image || 'img/urbanivore.webp';
         image.alt = r.titre;
+        image.loading = 'lazy';      // ne charge que les images visibles
+        image.decoding = 'async';
+        image.onerror = () => { image.onerror = null; image.src = 'img/urbanivore.webp'; };
 
         const content = document.createElement('div');
         content.className = 'card-content';
@@ -220,15 +226,15 @@ h1::after {
         const lien = document.createElement('a');
         lien.href = r.lien;
         lien.target = '_blank';
+        lien.rel = 'noopener';
         lien.textContent = 'Voir la recette';
 
-        content.appendChild(titre);
-        content.appendChild(lien);
-        card.appendChild(image);
-        card.appendChild(content);
-        grid.appendChild(card);
+        content.append(titre, lien);
+        card.append(image, content);
+        frag.appendChild(card);
       });
     }
+    grid.appendChild(frag); // une seule insertion dans le DOM
   </script>
 </body>
 </html>

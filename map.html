@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link rel="icon" href="img/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
   <meta name="robots" content="index, follow">
 
@@ -31,7 +36,6 @@
 
   <!-- Polices & styles globaux -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
     * {
       box-sizing: border-box;
@@ -416,6 +420,12 @@
   transform: scale(1.03);
 }
 
+/* Fond OSM gratuit rendu dans un style clair et désaturé (proche de CARTO Positron) */
+.leaflet-tile-pane .osm-light {
+  filter: grayscale(1) brightness(1.12) contrast(0.82) saturate(0);
+}
+.leaflet-container { background: #f2f2f0; }
+
 /* Tooltip personnalisé */
 .custom-tooltip {
   background-color: #2e8b57 !important;
@@ -429,23 +439,6 @@
   </style>
 
 
-  <script>
-    function ajusterHauteurMain() {
-      const header = document.querySelector('header');
-      const main = document.querySelector('main');
-
-      const headerHeight = header.offsetHeight;
-      const windowHeight = window.innerHeight;
-
-      main.style.height = (windowHeight - headerHeight) + 'px';
-    }
-
-    // Ajustement au chargement
-    window.addEventListener('load', ajusterHauteurMain);
-
-    // Optionnel : ajustement au redimensionnement de la fenêtre
-    window.addEventListener('resize', ajusterHauteurMain);
-  </script>
 </head>
 
 <body>
@@ -553,25 +546,6 @@
     <line x1="21" y1="21" x2="16.65" y2="16.65"/>
   </svg>
 </button>
-<script>
-  document.getElementById("geolocate-btn").addEventListener("click", function () {
-  if (!navigator.geolocation) {
-    alert("La géolocalisation n'est pas supportée par votre navigateur.");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const { latitude, longitude } = position.coords;
-      map.setView([latitude, longitude], 16);
-    },
-    (error) => {
-      alert("Impossible de vous localiser. Veuillez vérifier les autorisations.");
-      console.error("Erreur de géolocalisation :", error);
-    }
-  );
-});
-</script>
   </div>
   <datalist id="suggestions"></datalist>
 </div>
@@ -665,38 +639,6 @@
   margin-left: auto;
   margin-right: auto;
 }
-/*
-
-
-.marker-cluster-small {
-  background-color: #a3d977 !important;
-  border: 2px solid #6ca836 !important;
-  color: white;
-}
-
-.marker-cluster-medium {
-  background-color: #f4c542 !important;
-  border: 2px solid #e89e00 !important;
-  color: white;
-}
-
-.marker-cluster-large {
-  background-color: #f16c6c !important;
-  border: 2px solid #c0392b !important;
-  color: white;
-}
-
-
-.marker-cluster div {
-  background-color: inherit !important;
-
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-}*/
 
 </style>
 
@@ -823,19 +765,6 @@
 }
 
 </style>
-<script>
-  document.getElementById('fullscreenBtn').addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      document.getElementById('fullscreen-icon').innerHTML = '<path d="M6 16h2v2h2v2H6v-4zm0-8h4v2H8v2H6V8zm12 8v4h-4v-2h2v-2h2zm0-8v4h-2V10h-2V8h4z"/>';
-    } else {
-      document.exitFullscreen();
-      document.getElementById('fullscreen-icon').innerHTML = '<path d="M7 14H5v5h5v-2H7v-3zm0-4h2V7h3V5H7v5zm10 4h-2v3h-3v2h5v-5zm-2-4h2V5h-5v2h3v3z"/>';
-    }
-  });
-</script>
-
-</script>
 
 <!-- Pop-up d'aide -->
 <div id="helpPopup">
@@ -909,13 +838,6 @@
   </footer>
 
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <script src="js/recettes.js"></script>
-  <script src="js/script.js"></script>
-
-</body>
 <div id="loading-screen">
   <div class="spinner"></div>
   <p>Chargement des arbres comestibles…</p>
@@ -956,4 +878,12 @@
 }
 
 </style>
+
+  <!-- Scripts (defer : ne bloquent pas l'affichage, exécutés dans l'ordre) -->
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script defer src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script defer src="js/recettes.js"></script>
+  <script defer src="js/script.js"></script>
+
+</body>
 </html>

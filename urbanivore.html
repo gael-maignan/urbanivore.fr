@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urbanivore – Cartographie des arbres comestibles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <meta name="description" content="Urbanivore cartographie les arbres comestibles accessibles dans l'espace public de nos métropoles.">
+  <meta property="og:image" content="https://urbanivore.fr/img/urbanivore.webp">
+  <link rel="icon" href="img/logo.png" type="image/png">
+
+  <style>
+    :root {
+      --cream: #f8f4ec;
+      --parchment: #f0e8d6;
+      --moss: #3d5a2e;
+      --forest: #2a3d1e;
+      --sage: #7a9a5e;
+      --lichen: #a8b89a;
+      --bark: #5c4a32;
+      --gold: #c9a84c;
+      --text: #2a2419;
+      --text-light: #6b5d4a;
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'Cormorant Garamond', serif;
+      --font-ui: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── HEADER / HERO ─── */
+    header {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      background: var(--forest);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 5rem 4rem 5rem 5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 80%, rgba(61,90,46,0.6) 0%, transparent 70%),
+                  url('img/urbanivore.webp') center/cover;
+      mix-blend-mode: multiply;
+      opacity: 0.35;
+    }
+
+    .hero-label {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--lichen);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 8vw, 8rem);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.4s;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--lichen);
+      margin-top: 1.5rem;
+      max-width: 26ch;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.6s;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.8s;
+    }
+
+    .btn-primary {
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold);
+      color: var(--forest);
+    }
+
+    .btn-secondary {
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.6);
+      color: white;
+    }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.05);
+      animation: slowZoom 20s ease-in-out infinite alternate;
+    }
+
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--forest) 0%, transparent 40%),
+                  linear-gradient(to top, rgba(42,61,30,0.4) 0%, transparent 60%);
+    }
+
+    /* Floating botanical number */
+    .hero-number {
+      position: absolute;
+      bottom: 3rem;
+      right: 3rem;
+      font-family: var(--font-display);
+      font-size: 8rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+      z-index: 10;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-ui);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lichen);
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.4s;
+      z-index: 10;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 3rem;
+      background: linear-gradient(to bottom, var(--lichen), transparent);
+      animation: scrollLine 1.8s ease infinite;
+    }
+
+    /* ─── SECTION INTRO ─── */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 0;
+      border-top: 1px solid rgba(61,90,46,0.15);
+    }
+
+    .intro-aside {
+      background: var(--parchment);
+      padding: 5rem 3rem;
+      border-right: 1px solid rgba(61,90,46,0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .intro-aside::before {
+      content: '01';
+      font-family: var(--font-display);
+      font-size: 6rem;
+      color: rgba(61,90,46,0.07);
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      line-height: 1;
+    }
+
+    .section-label {
+      font-family: var(--font-ui);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1.5rem;
+    }
+
+    .intro-aside h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--forest);
+    }
+
+    .intro-aside h2 em {
+      font-style: italic;
+      color: var(--bark);
+    }
+
+    .intro-body {
+      padding: 5rem 5rem 5rem 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro-body p {
+      font-size: 1.25rem;
+      color: var(--text);
+      line-height: 1.8;
+      max-width: 55ch;
+    }
+
+    .intro-body p + p {
+      margin-top: 1.5rem;
+    }
+
+    .intro-body strong {
+      font-weight: 400;
+      color: var(--moss);
+    }
+
+    .intro-body a {
+      color: var(--moss);
+      border-bottom: 1px solid currentColor;
+      transition: color 0.2s;
+    }
+
+    .intro-body a:hover { color: var(--gold); }
+
+    .contribute-banner {
+      margin-top: 3rem;
+      padding: 1.5rem 2rem;
+      border-left: 3px solid var(--gold);
+      background: rgba(201,168,76,0.06);
+    }
+
+    .contribute-banner p {
+      font-size: 1rem;
+      color: var(--bark);
+      margin: 0;
+    }
+
+    .contribute-banner a {
+      color: var(--bark);
+      font-weight: 500;
+    }
+
+    /* ─── MAP SECTION ─── */
+    .map-section {
+      background: var(--forest);
+      padding: 6rem 0 0;
+      position: relative;
+    }
+
+    .map-header {
+      padding: 0 5rem 3rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .map-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.1;
+    }
+
+    .map-header h2 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .city-nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .city-btn {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      background: transparent;
+      color: var(--lichen);
+      border: 1px solid rgba(168,184,154,0.3);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .city-btn:hover {
+      border-color: var(--lichen);
+      color: var(--cream);
+    }
+
+    .city-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--forest);
+    }
+
+    .map-frame-wrap {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+    }
+
+    .map-frame-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .map-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(42,61,30,0.92) 0%, rgba(42,61,30,0.6) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      transition: opacity 0.8s ease;
+      z-index: 5;
+    }
+
+    .map-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .map-overlay p {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--lichen);
+      font-size: 1.1rem;
+    }
+
+    /* ─── RECIPES SECTION ─── */
+    .recipes-section {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+    }
+
+    .recipes-body {
+      padding: 6rem 5rem;
+      border-right: 1px solid rgba(61,90,46,0.12);
+    }
+
+    .recipes-body .section-label { margin-bottom: 1rem; }
+
+    .recipes-body h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 400;
+      color: var(--forest);
+      margin-bottom: 1.5rem;
+    }
+
+    .recipes-body p {
+      font-size: 1.15rem;
+      color: var(--text-light);
+      max-width: 50ch;
+      line-height: 1.8;
+    }
+
+    .recipes-link {
+      display: inline-block;
+      margin-top: 2.5rem;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--moss);
+      border-bottom: 1px solid var(--sage);
+      padding-bottom: 0.3rem;
+      transition: all 0.25s;
+    }
+
+    .recipes-link:hover {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .recipes-count {
+      background: var(--forest);
+      padding: 6rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .recipes-count .big-number {
+      font-family: var(--font-display);
+      font-size: 7rem;
+      font-weight: 400;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .recipes-count .big-label {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--lichen);
+      margin-top: 0.5rem;
+    }
+
+    /* ─── VISION SECTION ─── */
+    .vision-section {
+      background: var(--parchment);
+      padding: 7rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      border-top: 1px solid rgba(61,90,46,0.12);
+    }
+
+    .vision-section .section-label { margin-bottom: 1.5rem; }
+
+    .vision-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      color: var(--forest);
+      margin-bottom: 2rem;
+      line-height: 1.2;
+    }
+
+    .vision-section p {
+      font-size: 1.1rem;
+      color: var(--text);
+      line-height: 1.85;
+    }
+
+    .vision-section p + p { margin-top: 1.25rem; }
+
+    blockquote {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--forest);
+      line-height: 1.4;
+      padding-top: 3rem;
+      border-top: 1px solid rgba(61,90,46,0.2);
+      margin-top: 3rem;
+    }
+
+    blockquote cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: var(--font-ui);
+      font-style: normal;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    /* ─── METHOD SECTION ─── */
+    .method-section {
+      padding: 6rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      border-top: 1px solid rgba(61,90,46,0.12);
+    }
+
+    .method-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      color: var(--forest);
+      margin-bottom: 2rem;
+    }
+
+    .method-section h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--bark);
+      margin: 2rem 0 0.75rem;
+    }
+
+    .method-section p, .method-section li {
+      font-size: 1.05rem;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+
+    .method-section ul, .method-section #sources-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .method-section li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(61,90,46,0.08);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .method-section li::before {
+      content: '→';
+      color: var(--sage);
+      font-size: 0.9rem;
+    }
+
+    .method-section a {
+      color: var(--moss);
+      transition: color 0.2s;
+      border-bottom: 1px solid transparent;
+    }
+
+    .method-section a:hover {
+      color: var(--gold);
+      border-color: currentColor;
+    }
+
+    /* ─── ABOUT SECTION ─── */
+    .about-section {
+      background: var(--forest);
+      padding: 6rem 5rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-section .section-label {
+      color: var(--lichen);
+      opacity: 0.7;
+    }
+
+    .about-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 400;
+      color: var(--cream);
+      margin: 1rem 0 1.5rem;
+      line-height: 1.15;
+    }
+
+    .about-section p {
+      font-size: 1.15rem;
+      color: var(--lichen);
+      line-height: 1.85;
+    }
+
+    .about-section a {
+      color: var(--gold);
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      transition: border-color 0.2s;
+    }
+
+    .about-section a:hover { border-color: var(--gold); }
+
+    .about-aside {
+      border-left: 1px solid rgba(168,184,154,0.2);
+      padding-left: 4rem;
+    }
+
+    .about-aside h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+
+    .about-aside p {
+      font-size: 1rem;
+      color: var(--lichen);
+    }
+
+    .contact-info {
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(168,184,154,0.2);
+    }
+
+    .contact-info p {
+      font-size: 0.95rem;
+    }
+
+    .contact-info a {
+      color: var(--gold);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--forest);
+      border-top: 1px solid rgba(168,184,154,0.15);
+      padding: 2.5rem 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer .footer-brand {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--cream);
+    }
+
+    footer nav {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    footer nav a {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--lichen);
+      transition: color 0.2s;
+    }
+
+    footer nav a:hover { color: var(--gold); }
+
+    footer p {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      color: rgba(168,184,154,0.4);
+    }
+
+    /* ─── DECORATIVE BOTANICAL LINES ─── */
+    .divider-botanical {
+      width: 100%;
+      height: 60px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .divider-botanical svg {
+      width: 100%;
+      height: auto;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slowZoom {
+      from { transform: scale(1.05); }
+      to { transform: scale(1.12); }
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.4); opacity: 0.4; }
+    }
+
+    /* Scroll-triggered reveals */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      header { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { height: 45vw; }
+      .hero-left { padding: 4rem 2rem 3rem; }
+      .intro { grid-template-columns: 1fr; }
+      .intro-body { padding: 3rem 2rem; }
+      .intro-aside { padding: 3rem 2rem; border-right: none; border-bottom: 1px solid rgba(61,90,46,0.12); }
+      .map-header { padding: 0 2rem 2rem; }
+      .recipes-section { grid-template-columns: 1fr; }
+      .recipes-count { padding: 3rem 2rem; }
+      .vision-section { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 2rem; }
+      .method-section { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 2rem; }
+      .about-section { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 2rem; }
+      .about-aside { border-left: none; border-top: 1px solid rgba(168,184,154,0.2); padding-left: 0; padding-top: 2rem; }
+      .recipes-body { padding: 4rem 2rem; }
+      footer { padding: 2rem; flex-direction: column; align-items: flex-start; }
+      .scroll-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════ HERO ═══ -->
+  <header>
+    <div class="hero-left">
+      <h1 class="hero-title">
+        Urbanivore
+      </h1>
+      <p class="hero-subtitle">Révéler le potentiel nourricier de nos métropoles</p>
+      <div class="hero-ctas">
+        <a href="#map" class="btn-primary" id="scrollButton">Découvrir la carte</a>
+        <a href="contribute" class="btn-secondary">Contribuer</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="img/urbanivore.webp" alt="Arbres comestibles en ville" />
+      <span class="hero-number">2025</span>
+    </div>
+    <div class="scroll-hint">Défiler</div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════ INTRO ═══ -->
+  <section class="intro">
+    <div class="intro-aside reveal">
+      <p class="section-label">La ville nourricière</p>
+      <h2>La ville au bord <em>des lèvres</em></h2>
+    </div>
+    <div class="intro-body reveal">
+      <p><strong>Urbanivore</strong> cartographie les arbres comestibles accessibles dans l'espace public de nos métropoles. Grâce aux données en Open Data et à une base de plus de 100 recettes associées à chaque essence, chacun peut réapprendre à cueillir, transformer, goûter… et mieux habiter sa ville.</p>
+      <p>Paris, Lyon, Bordeaux, Grenoble, Rennes, Strasbourg, Toulouse — des milliers d'arbres, des centaines de recettes à portée de main.</p>
+
+      <div class="contribute-banner">
+        <p>✦ <strong>Nouveau :</strong> Ajoutez des arbres à la carte collaborative. Prenez une photo, l'arbre est automatiquement identifié. <a href="contribute">Participer →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ MAP ═══ -->
+  <section class="map-section" id="map">
+    <div class="map-header reveal">
+      <h2>Carte <em>interactive</em></h2>
+      <nav class="city-nav">
+        <button class="city-btn active" onclick="setCity('paris', this)">Paris</button>
+        <button class="city-btn" onclick="setCity('toulouse', this)">Toulouse</button>
+        <button class="city-btn" onclick="setCity('lyon', this)">Lyon</button>
+        <button class="city-btn" onclick="setCity('bordeaux', this)">Bordeaux</button>
+        <button class="city-btn" onclick="setCity('grenoble', this)">Grenoble</button>
+        <button class="city-btn" onclick="setCity('strasbourg', this)">Strasbourg</button>
+        <button class="city-btn" onclick="setCity('rennes', this)">Rennes</button>
+      </nav>
+    </div>
+    <div class="map-frame-wrap">
+      <div class="map-overlay" id="mapOverlay">
+        <p>Cliquez pour afficher la carte interactive</p>
+        <button class="btn-primary" onclick="loadMap()">Afficher la carte</button>
+      </div>
+      <iframe id="cityMap" data-src="map?ville=paris" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ RECIPES ═══ -->
+  <section class="recipes-section">
+    <div class="recipes-body reveal">
+      <p class="section-label">Patrimoine végétal</p>
+      <h2>Des recettes & des usages</h2>
+      <p>De la confiture de sureau à l'infusion de tilleul, des tartines à la faîne aux sirops de pin — plus de 100 recettes ont été recensées pour valoriser les ressources végétales urbaines, saison après saison.</p>
+      <a href="recettes" class="recipes-link">Voir toutes les recettes</a>
+    </div>
+    <div class="recipes-count">
+      <span class="big-number">100+</span>
+      <span class="big-label">recettes référencées</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ VISION ═══ -->
+  <section class="vision-section">
+    <div class="reveal">
+      <p class="section-label">02 — Vision</p>
+      <h2>Pourquoi ce projet ?</h2>
+      <p>Urbanivore est né d'une conviction simple : nos villes regorgent de ressources oubliées. Arbres fruitiers, plantes comestibles, essences médicinales… Trop souvent ignorés, ces éléments du paysage urbain peuvent pourtant nourrir, soigner, relier.</p>
+      <p>Ce projet cartographique vise à réactiver des savoirs populaires en voie de disparition, à encourager une réappropriation collective des usages comestibles de la nature en ville.</p>
+      <p>En valorisant ces communs végétaux, Urbanivore questionne la place du vivant dans l'espace urbain : quels arbres plantons-nous, pour qui, pourquoi ?</p>
+    </div>
+    <div class="reveal">
+      <p>Il invite à repenser nos rapports à la ville à travers une biodiversité cultivée, une saisonnalité respectée, et des usages plus sensibles, plus durables, plus libres de l'espace public.</p>
+      <p>Cueillir, transformer, partager : autant de gestes simples qui renouent avec une écologie du quotidien et une autonomie alimentaire à l'échelle locale.</p>
+      <blockquote>
+        « Faire aimer à planter des arbres. »
+        <cite>— Jean Giono</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ METHOD ═══ -->
+  <section class="method-section">
+    <div class="reveal">
+      <p class="section-label">03 — Méthodologie</p>
+      <h2>Open Data & cartographie</h2>
+      <p>Les cartes ont été créées à partir de données Open Data fournies par les métropoles et collectivités. Le traitement a été réalisé en JavaScript (Leaflet, MarkerCluster), et le code source est librement accessible.</p>
+      <h3>Code & données</h3>
+      <ul>
+        <li><a href="https://github.com/gael-mgn/Urbanivore" target="_blank">Code source (GitHub)</a></li>
+        <li><a href="https://github.com/gael-mgn/Urbanivore/tree/main/data">Données utilisées (post-traitement)</a></li>
+        <li><a href="mailto:contact@gael-maignan.fr">Documentation technique</a></li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <p class="section-label">Sources de données</p>
+      <h2>Villes partenaires</h2>
+      <ul id="sources-list">
+        <li id="source-paris"><a href="https://opendata.paris.fr/explore/dataset/les-arbres/export/" target="_blank">Arbres — Paris Data, Mairie de Paris</a></li>
+        <li id="source-toulouse"><a href="https://data.toulouse-metropole.fr/explore/dataset/arbres-urbains/information/" target="_blank">Arbres urbains — Toulouse Métropole</a></li>
+        <li id="source-lyon"><a href="https://data.grandlyon.com/portail/fr/jeux-de-donnees/arbres-alignement-metropole-lyon/info" target="_blank">Arbres d'alignement — DataGrandLyon</a></li>
+        <li id="source-bordeaux"><a href="https://datahub.bordeaux-metropole.fr/explore/dataset/ec_arbre_p/information/" target="_blank">Patrimoine arboré — Bordeaux Métropole</a></li>
+        <li id="source-grenoble"><a href="https://www.data.gouv.fr/datasets/arbres-grenoble/" target="_blank">Arbres — Ville de Grenoble</a></li>
+        <li id="source-rennes"><a href="https://data.rennesmetropole.fr/explore/dataset/arbre/information/" target="_blank">Arbres — Rennes Métropole</a></li>
+        <li id="source-strasbourg"><a href="https://data.strasbourg.eu/explore/dataset/patrimoine_arbore/" target="_blank">Patrimoine arboré — Strasbourg</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ ABOUT ═══ -->
+  <section class="about-section">
+    <div class="reveal">
+      <p class="section-label">04 — À propos</p>
+      <h2>Gaël Maignan</h2>
+      <p>Étudiant à l'École des Ingénieurs de la Ville de Paris, passionné par les formes sensibles de réappropriation de la ville. Je développe <strong style="color:var(--cream); font-weight:400;">Urbanivore</strong> en lien avec mes engagements pour une ville plus comestible, plus partagée, plus durable.</p>
+      <p style="margin-top:1.25rem;"><a href="https://www.linkedin.com/in/gael-maignan" target="_blank">LinkedIn →</a></p>
+    </div>
+    <div class="about-aside reveal">
+      <h3>Pour aller plus loin…</h3>
+      <p>La cartographie n'est jamais finie. Prenez part à <em><a href="https://ville-sonore.fr" target="_blank">La Ville Sonore</a></em>, un projet collaboratif visant à capturer la ville à travers le son.</p>
+      <div class="contact-info">
+        <p class="section-label" style="margin-bottom:0.5rem;">Contact</p>
+        <p>Pour toute question ou suggestion : <a href="mailto:contact@gael-maignan.fr">contact@gael-maignan.fr</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ FOOTER ═══ -->
+  <footer>
+    <span class="footer-brand">Urbanivore</span>
+    <nav>
+      <a href="#map">Carte</a>
+      <a href="recettes">Recettes</a>
+      <a href="contribute">Contribuer</a>
+      <a href="https://www.openstreetmap.org/">OpenStreetMap</a>
+      <a href="#">Mentions légales</a>
+    </nav>
+    <p>© 2025 Urbanivore — Gaël Maignan</p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════ SCRIPTS ═══ -->
+  <script>
+    // Map logic
+    function loadMap() {
+      const iframe = document.getElementById('cityMap');
+      const overlay = document.getElementById('mapOverlay');
+      if (iframe.dataset.src && !iframe.src) {
+        iframe.src = iframe.dataset.src;
+      }
+      overlay.classList.add('hidden');
+      setTimeout(() => overlay.style.display = 'none', 800);
+    }
+
+    function setCity(city, button) {
+      const iframe = document.getElementById('cityMap');
+      const overlay = document.getElementById('mapOverlay');
+      iframe.src = `map?ville=${city}`;
+      if (overlay && !overlay.classList.contains('hidden')) {
+        overlay.classList.add('hidden');
+        setTimeout(() => overlay.style.display = 'none', 800);
+      }
+      document.querySelectorAll('.city-btn').forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+    }
+
+    // Auto-load on desktop
+    if (window.innerWidth > 900) {
+      document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting) {
+            const iframe = document.getElementById('cityMap');
+            if (iframe.dataset.src && !iframe.src) {
+              iframe.src = iframe.dataset.src;
+            }
+            const overlay = document.getElementById('mapOverlay');
+            if (overlay) {
+              overlay.classList.add('hidden');
+              setTimeout(() => overlay.style.display = 'none', 800);
+            }
+            observer.disconnect();
+          }
+        }, { threshold: 0.2 });
+        observer.observe(document.getElementById('map'));
+      });
+    }
+
+    // Smooth scroll
+    document.getElementById('scrollButton').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Scroll reveals
+    document.addEventListener('DOMContentLoaded', () => {
+      const reveals = document.querySelectorAll('.reveal');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = (i % 3) * 0.12 + 's';
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      reveals.forEach(el => obs.observe(el));
+    });
+
+    // URL param handling
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const ville = params.get('ville');
+      if (ville) {
+        const iframe = document.getElementById('cityMap');
+        if (iframe) iframe.setAttribute('data-src', `map?ville=${ville}`);
+        document.querySelectorAll('.city-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.textContent.toLowerCase() === ville.toLowerCase()) btn.classList.add('active');
+        });
+        document.querySelectorAll('#sources-list li').forEach(li => li.style.display = 'none');
+        const selected = document.getElementById(`source-${ville.toLowerCase()}`);
+        if (selected) selected.style.display = 'flex';
+      }
+    });
+  </script>
+
+</body>
+</html>
